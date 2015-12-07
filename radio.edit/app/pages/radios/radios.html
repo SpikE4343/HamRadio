@@ -1,0 +1,84 @@
+<div style="width:100%" layout="row">
+    <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+
+        <md-toolbar layout="row" class="md-whiteframe-z1">
+            <h1>Radios</h1>
+        </md-toolbar>
+        
+        <md-input-container style="margin-bottom:0">
+            <label>Radio Name</label>
+            <input required name="radioName" ng-model="_ctrl.filterText" ng-change="_ctrl.filter()">
+        </md-input-container>
+        
+        <md-progress-circular ng-show="_ctrl.radios.length == 0"  md-mode="indeterminate"></md-progress-circular>
+        
+        <md-list ng-show="_ctrl.radios.length > 0" >
+            <md-list-item ng-repeat="radio in _ctrl.radios">
+                <md-button ng-click="_ctrl.selectRadio(radio, $index)" ng-class="{'selected' : radio === _ctrl.selected }">
+                    {{radio.name}}
+                </md-button>
+            </md-list-item>
+        </md-list>
+    </md-sidenav>
+
+    <div ng-show="_ctrl.selected != null" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
+
+        <md-toolbar layout="row" class="md-whiteframe-z1">
+            <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List">
+                <md-icon md-svg-icon="menu"></md-icon>
+            </md-button>
+            <h1>{{ _ctrl.selected.settings.callsign}}</h1>
+        </md-toolbar>
+
+        <section>
+            <md-content flex id="content">
+                <div layout="column" style="width:50%">
+                    <br />
+                    <md-content layout-padding class="autoScroll">
+                        <md-input-container ng-repeat="(name, setting) in _ctrl.selected.settings">
+                            <label>{{name}}</label>
+                            <input ng-model="setting" type="text">
+                        </md-input-container>
+                    </md-content>
+
+
+                </div>
+            </md-content>
+        </section>
+
+        <md-card>
+            <md-content flex id="content">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <div class="md-title">Bands</div>
+                    </div>
+                </md-toolbar>
+                <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="{{band.name}}" ng-repeat="band in _ctrl.selected.bands">
+                        <md-data-table-container>
+                            <table md-data-table class="md-primary" md-row-select="selected" md-progress="deferred">
+                                <thead md-order="query.order" md-trigger="onorderchange">
+                                    <tr>
+                                        <th numeric name="Id"></th>
+                                        <th numeric unit="Mhz" order-by="freq" name="Frequency"></th>
+                                        <th order-by="label" name="Label"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr md-auto-select ng-repeat="channel in band.channels | orderBy: query.order">
+                                        <td>{{$index+1}}</td>
+                                        <td show-unit>{{channel.freq}}</td>
+                                        <td>{{band.labels[$index]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </md-data-table-container>
+
+
+
+                    </md-tab>
+                </md-tabs>
+            </md-content>
+        </md-card>
+    </div>
+</div>

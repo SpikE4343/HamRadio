@@ -15,12 +15,7 @@
     "appdmg": "^0.3.2",
     "rcedit": "^0.3.0"
   },
-  "scripts": {
-    "postinstall": "node ./tasks/app_npm_install",
-    "app-install": "node ./tasks/app_npm_install",
-    "build": "gulp build",
-    "release": "gulp release --env=production",
-    "start": "node ./tasks/start",
-    "test": "node ./tasks/start --env=test"
+  "dependencies": {
+    "binary-file": "^0.1.2"
   }
 }

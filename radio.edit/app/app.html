@@ -2,16 +2,17 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Electron Boilerplate</title>
+    <title>radio.edit</title>
 
     <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="../bower_components/angular-material-data-table/dist/md-data-table.min.css" />
     <link href="./stylesheets/main.css" rel="stylesheet" type="text/css">
 
     
 </head>
-<body>
-
-    <ng-view></ng-view>
+<body ng-app="app">
+    
+    <div style="width:100%;height:100%" layout="row" ui-view></div>
 
     <!-- build:js scripts/vendor.js -->
     <script src="../bower_components/angular/angular.js"></script>
@@ -19,10 +20,13 @@
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <script src="../bower_components/angular-aria/angular-aria.js"></script>
     <script src="../bower_components/angular-material/angular-material.js"></script>
+    <script src="../bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
     <!-- endbuild -->
    
     <!-- build:app scripts/app.js -->
     <script src="app.js"></script>
+    <script src="pages/radios/radios.js"></script>
+    <script src="model/ftm400.js"></script>
     <!-- endbuild -->
     
 </body>
