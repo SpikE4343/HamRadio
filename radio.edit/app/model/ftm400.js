@@ -20,11 +20,61 @@ var labelCharSet = '0123456789' +
 				   '????????????????????????????????????????' +
 				   '???????????';
 
-var settings = [ 
+var ftm400_map = 
+{
+	model:'FTM-400',
+	fileMarker: '',
+	
+	settings: 
 	{
-		callsign: [696, 10]
+		callsign: [696, 10],
+		aprs:{
+			callsign: [0,0, 'ascii']
+		}
+	},
+	
+	bands:
+	{
+		labels:518,
+		channel:
+		{
+			count: 500,
+			size: 16,
+			fields:
+			[
+				{ name: ''},
+				{ name: 'freq',
+				  encoding: 'bcd',
+				  size: 3,}
+			]
+		},
+		
+		label: {
+			count: 518,
+			size: 8,
+			
+			charSet: '0123456789' +
+				     'ABCDEFGHIJKLMNOPQRSTUVWXYZ'+
+				     'abcdefghijklmnopqrstuvwxyz' + 
+				     '!"#$%&`()*+,-./:;<=>?@[\\]^_`{|}~?????? ' + 
+				     '????????????????????????????????????????' +
+				     '????????????????????????????????????????' +
+				     '???????????' 	
+		},
+		
+		memory:
+		[
+			{
+				name:'A',
+				channels: [2048, 500 * 16]
+			},
+			{
+				name:'B',
+				channels: [10336, 500 * 16]
+			}
+		]
 	}
-];
+};
 
 function ftm400Service($q) {
 	return {
@@ -39,6 +89,7 @@ function ftm400Service($q) {
 		var radio = {
 			name: 'FTM-400',
 			error: "",
+			map: ftm400_map,
 			data: {},
 			settings: {},
 			bands: [{ 
@@ -92,7 +143,13 @@ function ftm400Service($q) {
 			freq += (parts[i] * Math.pow( 10, i)) * 10000;			
 		}
 		
-		return freq / 1000000.0;
+		return freq;
+	}
+	
+	function encodeFrequenceMhz( freq )
+	{
+		var f = freq / 1000000.0;
+		return 
 	}
 	
 	function readMemory(memStart, radio, subRadio, buffer) {
@@ -103,7 +160,7 @@ function ftm400Service($q) {
 			var rawStart = buffer.readUInt8( start );
 			
 			if( rawStart >> 7 == 0 )
-				break; 
+				continue; 
 			
 			var rawFreq = buffer.readUInt32BE(start+2);
 			
