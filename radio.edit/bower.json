@@ -19,6 +19,8 @@
   "dependencies": {
     "angular-material-data-table": "~0.8.14",
     "angular-route": "~1.4.8",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "angular": "~1.4.8",
+    "md-data-table": "*"
   }
 }

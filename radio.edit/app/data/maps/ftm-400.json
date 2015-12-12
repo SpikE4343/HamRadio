@@ -1,187 +1,187 @@
 {
-    "model": "FTM-400",
-    "fileMarker": "AH034$",
-    "settings": {
-        "callsign": {
-            "start": 696,
-            "size": 10,
-            "encoding": "ascii"
-        },
-        "aprs": {}
+  "model": "FTM-400",
+  "fileMarker": "AH034$",
+  "settings": {
+    "callsign": {
+      "start": 696,
+      "size": 10,
+      "encoding": "ascii"
     },
-    "bands": [
-        {
-            "name": "A",
-            "channels": {
-                "start": 2048
-            },
-            "labels": {
-                "start": 18624
-            }
-        },
-        {
-            "name": "B",
-            "channels": {
-                "start": 10336
-            },
-            "labels": {
-                "start": 22768
-            }
-        }
-    ],
-    "channel": {
-        "count": 500,
-        "size": 16,
-        "fields": {
-            "used": {
-                "label": "Used",
-                "encoding": "bool",
-                "bits": [
-                    0,
-                    1,
-                    false
-                ]
-            },
-            "skip": {
-                "label": "Skip",
-                "encoding": "bool",
-                "bits": [
-                    1,
-                    2,
-                    false
-                ]
-            },
-            "mode": {
-                "label": "Mode",
-                "encoding": [
-                    "FM",
-                    "AM",
-                    "NFM",
-                    "",
-                    "WFM"
-                ],
-                "bits": [
-                    9,
-                    3,
-                    false
-                ]
-            },
-            "oddsplit": {
-                "label": "Odd Split",
-                "encoding": "bool",
-                "bits": [
-                    13,
-                    1,
-                    false
-                ]
-            },
-            "duplex": {
-                "label": "Duplex",
-                "encoding": [
-                    "",
-                    "",
-                    "-",
-                    "+",
-                    "split"
-                ],
-                "bits": [
-                    14,
-                    2,
-                    false
-                ]
-            },
-            "tmode": {
-                "label": "Transmit Mode",
-                "encoding": [
-                    "",
-                    "Tone",
-                    "TSQL",
-                    "-RVT",
-                    "DTCS",
-                    "-PR",
-                    "-PAG"
-                ],
-                "bits": [
-                    41,
-                    3,
-                    false
-                ]
-            },
-            "power": {
-                "label": "Transmit Power",
-                "encoding": [
-                    "Hi",
-                    "Mid",
-                    "Low"
-                ],
-                "bits": [
-                    72,
-                    2,
-                    false
-                ]
-            },
-            "tone": {
-                "label": "Transmit Tone",
-                "encoding": [],
-                "bits": [
-                    74,
-                    2,
-                    false
-                ]
-            },
-            "dtcs": {
-                "label": "DTCS",
-                "encoding": [],
-                "bits": [
-                    81,
-                    7,
-                    false
-                ]
-            },
-            "showalpha": {
-                "label": "Show Alpha",
-                "encoding": "bool",
-                "bits": [
-                    88,
-                    1,
-                    false
-                ]
-            },
-            "offset": {
-                "label": "Offset",
-                "encoding": [],
-                "bits": [
-                    104,
-                    8,
-                    false
-                ]
-            },
-            "freq": {
-                "label": "Frequency",
-                "units": "Mhz",
-                "encoding": "bcd",
-                "start": 2,
-                "size": 3
-            },
-            "split": {
-                "label": "Frequency Split",
-                "units": "Mhz",
-                "encoding": "bcd",
-                "start": 6,
-                "size": 3
-            }
-        }
+    "aprs": {}
+  },
+  "bands": [
+    {
+      "name": "A",
+      "channels": {
+        "start": 2048
+      },
+      "labels": {
+        "start": 18624
+      }
     },
-    "labels": {
-        "count": 518,
-        "size": 8,
-        "fields": {
-            "label": {
-                "label": "Label",
-                "encoding": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!\"#$%&`()*+,-./:;<=>?@[\\]^_`{|}~?????? ???????????????????????????????????????????????????????????????????????????????????????????",
-                "start": 0,
-                "size": 8
-            }
-        }
+    {
+      "name": "B",
+      "channels": {
+        "start": 10336
+      },
+      "labels": {
+        "start": 22768
+      }
     }
+  ],
+  "channel": {
+    "count": 500,
+    "size": 16,
+    "fields": {
+      "used": {
+        "label": "Used",
+        "encoding": "bool",
+        "bits": [
+          0,
+          1,
+          false
+        ]
+      },
+      "skip": {
+        "label": "Skip",
+        "encoding": "bool",
+        "bits": [
+          1,
+          2,
+          false
+        ]
+      },
+      "mode": {
+        "label": "Mode",
+        "encoding": [
+          "FM",
+          "AM",
+          "NFM",
+          "",
+          "WFM"
+        ],
+        "bits": [
+          9,
+          3,
+          false
+        ]
+      },
+      "oddsplit": {
+        "label": "Odd Split",
+        "encoding": "bool",
+        "bits": [
+          13,
+          1,
+          false
+        ]
+      },
+      "duplex": {
+        "label": "Duplex",
+        "encoding": [
+          "",
+          "",
+          "-",
+          "+",
+          "split"
+        ],
+        "bits": [
+          14,
+          2,
+          false
+        ]
+      },
+      "tmode": {
+        "label": "Transmit Mode",
+        "encoding": [
+          "",
+          "Tone",
+          "TSQL",
+          "-RVT",
+          "DTCS",
+          "-PR",
+          "-PAG"
+        ],
+        "bits": [
+          41,
+          3,
+          false
+        ]
+      },
+      "power": {
+        "label": "Transmit Power",
+        "encoding": [
+          "Hi",
+          "Mid",
+          "Low"
+        ],
+        "bits": [
+          72,
+          2,
+          false
+        ]
+      },
+      "tone": {
+        "label": "Transmit Tone",
+        "encoding": [],
+        "bits": [
+          74,
+          2,
+          false
+        ]
+      },
+      "dtcs": {
+        "label": "DTCS",
+        "encoding": [],
+        "bits": [
+          81,
+          7,
+          false
+        ]
+      },
+      "showalpha": {
+        "label": "Show Alpha",
+        "encoding": "bool",
+        "bits": [
+          88,
+          1,
+          false
+        ]
+      },
+      "offset": {
+        "label": "Offset",
+        "encoding": [],
+        "bits": [
+          104,
+          8,
+          false
+        ]
+      },
+      "freq": {
+        "label": "Frequency",
+        "units": "Mhz",
+        "encoding": "bcd",
+        "start": 2,
+        "size": 3
+      },
+      "split": {
+        "label": "Frequency Split",
+        "units": "Mhz",
+        "encoding": "bcd",
+        "start": 6,
+        "size": 3
+      }
+    }
+  },
+  "labels": {
+    "count": 518,
+    "size": 8,
+    "fields": {
+      "label": {
+        "label": "Label",
+        "encoding": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!\"#$%&`()*+,-./:;<=>?@[\\]^_`{|}~?????? ???????????????????????????????????????????????????????????????????????????????????????????",
+        "start": 0,
+        "size": 8
+      }
+    }
+  }
 }
