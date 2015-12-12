@@ -1,6 +1,10 @@
 angular.module('app')
 	.service('ftm400Service', ['$q', ftm400Service]);
 
+
+var bcd = require('bcd');
+var bit = require('bit-buffer');
+
 var fileMarker = "AH034$";
 var memoryChannels = 500;
 var memoryChannelLabels = 518;
@@ -127,29 +131,14 @@ function ftm400Service($q) {
 	}
 
 	
-	function decodeFrequenceMhz( rawUint32BE )
+	function decodeFrequenceMhz( buffer )
 	{
-		var decodeFreqMask = parseInt('0x0000000F');
-		var bcd = rawUint32BE >> 8;
-		
-		var parts = [];
-		for (var index = 0; index < 6; index++) {
-			parts[index] = (bcd >> ( index * 4 )) & decodeFreqMask;
-		}
-			
-		var freq = 0;
-		for( var i=0; i < parts.length; ++i)
-		{
-			freq += (parts[i] * Math.pow( 10, i)) * 10000;			
-		}
-		
 		return freq;
 	}
 	
 	function encodeFrequenceMhz( freq )
 	{
-		var f = freq / 1000000.0;
-		return 
+		return bcd.encode(freq*100.0, 3);
 	}
 	
 	function readMemory(memStart, radio, subRadio, buffer) {
@@ -157,22 +146,23 @@ function ftm400Service($q) {
 			var start = memStart + i * channelSize;
 			var end = start + channelSize;
 			
+			var bits = bit.bitView( buffer, start, channelSize );
+			
 			var rawStart = buffer.readUInt8( start );
 			
 			if( rawStart >> 7 == 0 )
 				continue; 
 			
 			var rawFreq = buffer.readUInt32BE(start+2);
-			
-			
+			var freqStart = start +2;
 			
 			var channel = {
+				id: i,
 				start: start,
 				end: end,
 				raw: buffer.slice(start, end),
-				freq: decodeFrequenceMhz( rawFreq ),
-				rawFreq: rawFreq
-				
+				freq: bcd.decode(buffer.slice(freqStart, freqStart+3 )),
+				  //decodeFrequenceMhz( rawFreq ),
 			};
 			
 			radio.bands[subRadio].channels[i] = channel;
@@ -205,6 +195,6 @@ function ftm400Service($q) {
 	}
 
 	function saveRadio(file, radio) {
-
+		
 	}
 }

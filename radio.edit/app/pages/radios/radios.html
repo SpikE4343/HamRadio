@@ -67,7 +67,7 @@
                                 <tbody>
                                     <tr md-auto-select ng-repeat="channel in band.channels | orderBy: query.order">
                                         <td>{{$index+1}}</td>
-                                        <td show-unit>{{channel.freq}}</td>
+                                        <td show-unit>{{channel.freq/100.0}}</td>
                                         <td>{{band.labels[$index]}}</td>
                                     </tr>
                                 </tbody>

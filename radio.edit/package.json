@@ -16,6 +16,7 @@
     "rcedit": "^0.3.0"
   },
   "dependencies": {
+    "bcd": "^1.0.0",
     "binary-file": "^0.1.2"
   }
 }
