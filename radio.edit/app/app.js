@@ -4,7 +4,7 @@ var app = angular.module('app', [
     'md.data.table'
 ]);
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     
     $urlRouterProvider.otherwise('/radios');
     
@@ -22,5 +22,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
         .state('about', {
             // we'll get to this in a bit       
         });
+        
+        
+    //$mdThemingProvider
+    //    .theme('default')
+    //    .dark();
         
 });

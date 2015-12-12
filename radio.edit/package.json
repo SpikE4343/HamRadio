@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "bcd": "^1.0.0",
-    "binary-file": "^0.1.2"
+    "binary-file": "^0.1.2",
+    "bit-buffer": "0.0.3"
   }
 }

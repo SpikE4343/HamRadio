@@ -59,16 +59,20 @@
                             <table md-data-table class="md-primary" md-row-select="selected" md-progress="deferred">
                                 <thead md-order="query.order" md-trigger="onorderchange">
                                     <tr>
-                                        <th numeric name="Id"></th>
+                                        <th numeric name="Id" order-by="id"></th>
                                         <th numeric unit="Mhz" order-by="freq" name="Frequency"></th>
                                         <th order-by="label" name="Label"></th>
+                                        <th name="Power" order-by="data.power"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr md-auto-select ng-repeat="channel in band.channels | orderBy: query.order">
-                                        <td>{{$index+1}}</td>
-                                        <td show-unit>{{channel.freq/100.0}}</td>
-                                        <td>{{band.labels[$index]}}</td>
+                                        <td>{{channel.id}}</td>
+                                        <td show-unit>{{channel.data.freq}}</td>
+                                        <td>{{band.labels[channel.id-1]}}</td>
+                                        <td>{{channel.data.power}}</td>
+                                        <td>{{channel.data.mode}}</td>
+                                        <td>{{channel.data.tmode}}</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -11,7 +11,7 @@ function MainPageController(ftm400Service, $q, $mdDialog) {
 	
 	self.load = function()
 	{
-		fs.readFile( 'ftm400.dat', function (err, data) {
+		fs.readFile( 'kk6nlw-ftm-400.dat', function (err, data) {
 			
 			if( err )
 				throw err;
