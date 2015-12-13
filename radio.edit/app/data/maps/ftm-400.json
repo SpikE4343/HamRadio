@@ -1,36 +1,65 @@
 {
+  "vendor": "Yaesu",
   "model": "FTM-400",
-  "fileMarker": "AH034$",
+  "file": {
+    "marker": "AH034$",
+    "size": 65536
+  },
+  "serial": {
+    "buad": 48000
+  },
   "settings": {
     "callsign": {
       "start": 696,
+      "type": "string",
+      "encoding": "ascii",
       "size": 10,
-      "encoding": "ascii"
+      "fill": 255
     },
-    "aprs": {}
+    "aprs": {
+      "type": "group",
+      "callsign": {
+        "start": 1288,
+        "type": "string",
+        "encoding": "ascii",
+        "size": 8,
+        "fill": 202
+      }
+    }
   },
   "bands": [
     {
       "name": "A",
       "channels": {
-        "start": 2048
+        "type": "array",
+        "start": 2048,
+        "item": "channel",
+        "count": 500
       },
       "labels": {
-        "start": 18624
+        "type": "array",
+        "start": 18624,
+        "item": "label",
+        "count": 518
       }
     },
     {
       "name": "B",
       "channels": {
-        "start": 10336
+        "type": "array",
+        "start": 10336,
+        "item": "channel",
+        "count": 500
       },
       "labels": {
-        "start": 22768
+        "type": "array",
+        "start": 22768,
+        "item": "label",
+        "count": 518
       }
     }
   ],
   "channel": {
-    "count": 500,
     "size": 16,
     "fields": {
       "used": {
@@ -172,8 +201,7 @@
       }
     }
   },
-  "labels": {
-    "count": 518,
+  "label": {
     "size": 8,
     "fields": {
       "label": {
