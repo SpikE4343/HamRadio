@@ -4,23 +4,24 @@ var fs = require('fs');
 angular.module('app')
        .controller('MainPageController', ['radioService', '$q', '$mdDialog', MainPageController]);
 
-function MainPageController(ftm400Service, $q, $mdDialog) {
+function MainPageController(radioService, $q, $mdDialog) {
 	var self = this;
 	self.radios = [];
 	self.selected = null;
+  self.error = null;
 
 	self.load = function()
 	{
-
-		fs.readFile( 'kk6nlw-ftm-400.dat', function (err, data) {
-
-			if( err )
-				throw err;
-
-			var radio = ftm400Service.load( data );
-			console.log( radio );
-			self.radios.push(radio);
-		});
+    radioService.load( 'kk6nlw-ftm-400.dat' )
+      .then( function( radio )
+      {
+        self.radios.push( radio );
+        console.log(radio);
+      },
+      function(error)
+      {
+          self.error = error;
+      });
 	};
 
 	self.selectRadio = function( radio, index )

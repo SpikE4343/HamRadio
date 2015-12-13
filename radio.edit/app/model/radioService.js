@@ -1,5 +1,5 @@
 angular.module('app')
-	.service('ftm400Service', ['$q', ftm400Service]);
+	.service('radioService', ['$q', radioService]);
 
 
 var bcd = require('bcd');
@@ -12,10 +12,11 @@ var mapping = {
 
 function radioService($q)
 {
-	return {
-		load: loadRadio,
-		save: saveRadio,
-	};
+	function loadMappings()
+	{
+		// parse all .json files in mapping folder
+		// linking file.marker -> filename
+	}
 
 	function buildRadioFromMap( mmap )
 	{
@@ -45,7 +46,7 @@ function radioService($q)
 	function loadRadio( filename )
 	{
 		var p = $q.defer();
-		fs.readFile( filename, function(err, data )
+		fs.readFile( filename, function( err, data )
 		{
 			if( err )
 			{
@@ -53,8 +54,8 @@ function radioService($q)
 				return;
 			}
 
-			var marker = buffer.toString('ascii', 0, fileMarker.length);
-			if( !mapping.hasOwnProperty( marker ))
+			var marker = data.toString('ascii', 0, 6);
+			if( !mapping.hasOwnProperty( marker ) )
 			{
 				p.reject( "Unkown file type: " + marker );
 				return;
@@ -62,37 +63,71 @@ function radioService($q)
 
 			var mapFile = mapping[marker];
 
-			fs.readFile( mapfile + '.json', function (err, data){
-					if( err )
+			fs.readFile( 'app/data/maps/'+mapFile+'.json', function (maperr, mapData)
+			{
+					if( maperr )
 					{
 						p.reject( 'Unable to load mapping file: ' + mapfile );
 						return;
 					}
 
-					var mmap = JSON.parse(data);
+					var mmap = JSON.parse(mapData);
 					var radio = buildRadioFromMap( mmap );
+					parseRadio( radio, data);
+
+					p.resolve( radio );
 			});
 		});
 
 		return p.promise;
-
-
-
-
-		radio.data.size = buffer.length;
-		radio.settings.callsign = buffer.slice( 696, 696 + 10).toString();//buffer.toString('ascii', 696, 10);
-
-		radio.marker = marker;
-
-		readMemory(memoryAStart, radio, 0, buffer);
-		readMemory(memoryBStart, radio, 1, buffer);
-
-		readLabel(memoryALabelStart, radio, 0, buffer);
-		readLabel(memoryBLabelStart, radio, 1, buffer);
-
-		return radio;
 	}
 
+  function parseSettings( settings, map, buffer )
+	{
+		for (var name in map)
+		{
+			var setting = map[name];
+			if( setting.type === 'string' )
+			{
+				settings[name] =
+						buffer.toString(
+							setting.encoding,
+							setting.start,
+							setting.start+setting.size);
+			}
+			else if( setting.type === 'group')
+			{
+				settings[name] = {};
+				parseSettings( settings[name], setting, buffer);
+			}
+		}
+	}
+
+	function parseChannels( channels, def, buffer)
+	{
+		//def.channels.start
+	}
+
+	function parseBand( band, def, buffer)
+	{
+		parseChannels(band.channels, def.channels, buffer );
+	}
+
+	function parseBands( bands, map, buffer )
+	{
+		for (var id in map.bands) {
+			var def = map.bands[id];
+			var band = bands[id] = {};
+			band.name = def.name;
+		}
+	}
+
+	function parseRadio( radio, buffer )
+	{
+		var map = radio.map;
+		parseSettings( radio.settings, map.settings, buffer );
+		parseBands( radio.bands, map, buffer );
+	}
 
 	function decodeFrequenceMhz( buffer )
 	{
@@ -168,7 +203,8 @@ function radioService($q)
 		return label;
 	}
 
-	function readLabel(memStart, radio, subRadio, buffer) {
+	function readLabel(memStart, radio, subRadio, buffer)
+	{
 		for (var i = 0; i < memoryChannelLabels; ++i) {
 			var start = memStart + i * labelSize;
 			var end = start + labelSize;
@@ -179,7 +215,13 @@ function radioService($q)
 		}
 	}
 
-	function saveRadio(file, radio) {
+	function saveRadio(file, radio)
+	{
 
 	}
+
+	return {
+		load: loadRadio,
+		save: saveRadio
+	};
 }

@@ -4,14 +4,14 @@
         <md-toolbar layout="row" class="md-whiteframe-z1">
             <h1>Radios</h1>
         </md-toolbar>
-        
+
         <md-input-container style="margin-bottom:0">
             <label>Radio Name</label>
             <input required name="radioName" ng-model="_ctrl.filterText" ng-change="_ctrl.filter()">
         </md-input-container>
-        
-        <md-progress-circular ng-show="_ctrl.radios.length == 0"  md-mode="indeterminate"></md-progress-circular>
-        
+
+        <md-progress-circular ng-show="_ctrl.radios.length == 0 && _ctrl.error"  md-mode="indeterminate"></md-progress-circular>
+        <div>{{_ctrl.error}}</div>
         <md-list ng-show="_ctrl.radios.length > 0" >
             <md-list-item ng-repeat="radio in _ctrl.radios">
                 <md-button ng-click="_ctrl.selectRadio(radio, $index)" ng-class="{'selected' : radio === _ctrl.selected }">
