@@ -23,7 +23,7 @@ function radioService($q)
 		var radio = {
 			map: mmap,
 			vendor: mmap.vendor,
-			name: mmap.name,
+			name: mmap.model,
 			error: '',
 			settings: {},
 			bands: []
@@ -54,6 +54,7 @@ function radioService($q)
 				return;
 			}
 
+			// read in beginning of config
 			var marker = data.toString('ascii', 0, 6);
 			if( !mapping.hasOwnProperty( marker ) )
 			{
@@ -97,20 +98,61 @@ function radioService($q)
 			}
 			else if( setting.type === 'group')
 			{
-				settings[name] = {};
+				settings[name] = {group:true};
 				parseSettings( settings[name], setting, buffer);
 			}
 		}
 	}
 
-	function parseChannels( channels, def, buffer)
+	function parseField( channel, name, def, buffer, bits)
 	{
-		//def.channels.start
+		var value = null;
+		if( def.hasOwnProperty('bits'))
+		{
+			value = bits.getBits( def.bits[0], def.bits[1], def.bits[2]);
+		}
+
+		if( def.encoding === 'bcd' )
+		{
+			value = bcd.decode(buffer.slice(def.start, def.start+def.size));
+		}
+		//else if( def.encoding === '' )
+
+		channel.data[name] = value;
 	}
 
-	function parseBand( band, def, buffer)
+	function parseChannels( channels, def, itemdef, buffer)
 	{
-		parseChannels(band.channels, def.channels, buffer );
+		for (var i = 0; i < def.count; ++i)
+		{
+			var start = def.start + i * itemdef.size;
+			var end = start + itemdef.size;
+
+			var bytes = buffer.slice(start, end);
+			var bits = new bit.BitView( bytes );
+
+			var channel = {
+				id: i+1,
+				start: start,
+				end: end,
+				data: {}
+			};
+
+			for (var f in itemdef.fields ) {
+					parseField( channel, f, itemdef.fields[f], bytes, bits  );
+			}
+
+			channels.push( channel );
+		}
+	}
+
+	function parseBand( band, map, def, buffer)
+	{
+		band.name = def.name;
+		band.page = 0;
+		band.channels = [];
+		var itemdef = map.items[def.channels.item];
+		parseChannels(band.channels, def.channels, itemdef, buffer );
 	}
 
 	function parseBands( bands, map, buffer )
@@ -118,7 +160,7 @@ function radioService($q)
 		for (var id in map.bands) {
 			var def = map.bands[id];
 			var band = bands[id] = {};
-			band.name = def.name;
+			parseBand(band, map, def, buffer );
 		}
 	}
 
@@ -127,92 +169,6 @@ function radioService($q)
 		var map = radio.map;
 		parseSettings( radio.settings, map.settings, buffer );
 		parseBands( radio.bands, map, buffer );
-	}
-
-	function decodeFrequenceMhz( buffer )
-	{
-		return 0;
-	}
-
-	function encodeFrequenceMhz( freq )
-	{
-		return bcd.encode(freq*100.0, 3);
-	}
-
-	function setChannelData( channel, channelDataInfo, bitBuffer )
-	{
-
-	}
-
-	function readMemory(memStart, radio, subRadio, buffer) {
-		for (var i = 0; i < memoryChannels; ++i) {
-			var start = memStart + i * channelSize;
-			var end = start + channelSize;
-
-			var bits = new bit.BitView( buffer.slice(start, end));
-			var used = bits.getBits( 0, 1, false);
-
-
-			if( used == 0 )
-				continue;
-
-
-			var freqStart = start +2;
-
-			var channel = {
-				id: i+1,
-				start: start,
-				end: end,
-				raw: buffer.slice(start, end),
-
-				data: {
-					used: [used, used ? true : false],
-					skip: [bits.getBits( 1, 2, false), false],
-					mode: bits.getBits( 9, 3, false),
-					oddsplit: bits.getBits( 13, 1, false),
-					duplex: bits.getBits( 14, 2, false),
-					tmode: bits.getBits( 41, 3, false),
-					power: bits.getBits( 72, 2, false),
-					tone: bits.getBits( 74, 2, false),
-					dtcs: bits.getBits( 81, 7, false),
-					showalpha: bits.getBits( 88, 1, false),
-					offset: bits.getBits( 104, 8, false ),
-					freq: bcd.decode(buffer.slice(freqStart, freqStart+3 ))/100,
-					split: bcd.decode(buffer.slice(freqStart+4, freqStart+4+3 ))/100,
-				}
-				  //decodeFrequenceMhz( rawFreq ),
-			};
-
-			channel.data["used"] = []
-
-			radio.bands[subRadio].channels[i] = channel;
-		}
-	}
-
-	function decodeLabelString( rawLabel )
-	{
-		var label = "";
-		for (var index = 0; index < rawLabel.length; index++) {
-			var char = rawLabel[index];
-			if(char == 202 )
-				break;
-
-			label += labelCharSet[char];
-		}
-
-		return label;
-	}
-
-	function readLabel(memStart, radio, subRadio, buffer)
-	{
-		for (var i = 0; i < memoryChannelLabels; ++i) {
-			var start = memStart + i * labelSize;
-			var end = start + labelSize;
-
-			var label = decodeLabelString( buffer.slice(start, end) );
-
-			radio.bands[subRadio].labels[i] = label;
-		}
 	}
 
 	function saveRadio(file, radio)

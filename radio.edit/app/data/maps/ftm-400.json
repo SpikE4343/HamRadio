@@ -17,7 +17,6 @@
       "fill": 255
     },
     "aprs": {
-      "label": "APRS",
       "type": "group",
       "callsign": {
         "start": 1288,
@@ -66,8 +65,8 @@
       "size": 16,
       "fields": {
         "used": {
-          "type": "bool",
           "label": "Used",
+          "encoding": "bool",
           "bits": [
             0,
             1,
@@ -75,8 +74,8 @@
           ]
         },
         "skip": {
-          "type": "bool",
           "label": "Skip",
+          "encoding": "bool",
           "bits": [
             1,
             2,
@@ -84,7 +83,6 @@
           ]
         },
         "mode": {
-          "type": "int",
           "label": "Mode",
           "encoding": [
             "FM",
@@ -100,8 +98,8 @@
           ]
         },
         "oddsplit": {
-          "type": "bool",
           "label": "Odd Split",
+          "encoding": "bool",
           "bits": [
             13,
             1,
@@ -109,7 +107,6 @@
           ]
         },
         "duplex": {
-          "type": "int",
           "label": "Duplex",
           "encoding": [
             "",
@@ -125,7 +122,6 @@
           ]
         },
         "tmode": {
-          "type": "int",
           "label": "Transmit Mode",
           "encoding": [
             "",
@@ -143,8 +139,7 @@
           ]
         },
         "power": {
-          "type": "int",
-          "label": "Power",
+          "label": "Transmit Power",
           "encoding": [
             "Hi",
             "Mid",
@@ -157,8 +152,7 @@
           ]
         },
         "tone": {
-          "type": "int",
-          "label": "Tone",
+          "label": "Transmit Tone",
           "encoding": [],
           "bits": [
             74,
@@ -167,9 +161,8 @@
           ]
         },
         "dtcs": {
-          "type": "int",
           "label": "DTCS",
-          "encoding": "DTCS",
+          "encoding": [],
           "bits": [
             81,
             7,
@@ -177,8 +170,8 @@
           ]
         },
         "showalpha": {
-          "type": "bool",
           "label": "Show Alpha",
+          "encoding": "bool",
           "bits": [
             88,
             1,
@@ -186,7 +179,6 @@
           ]
         },
         "offset": {
-          "type": "int",
           "label": "Offset",
           "encoding": [],
           "bits": [
@@ -196,7 +188,6 @@
           ]
         },
         "freq": {
-          "type": "int",
           "label": "Frequency",
           "units": "Mhz",
           "encoding": "bcd",
@@ -204,7 +195,6 @@
           "size": 3
         },
         "split": {
-          "type": "int",
           "label": "Frequency Split",
           "units": "Mhz",
           "encoding": "bcd",
@@ -217,7 +207,6 @@
       "size": 8,
       "fields": {
         "label": {
-          "type": "string",
           "label": "Label",
           "encoding": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!\"#$%&`()*+,-./:;<=>?@[\\]^_`{|}~?????? ???????????????????????????????????????????????????????????????????????????????????????????",
           "start": 0,

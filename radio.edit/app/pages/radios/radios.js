@@ -9,6 +9,7 @@ function MainPageController(radioService, $q, $mdDialog) {
 	self.radios = [];
 	self.selected = null;
   self.error = null;
+  self.channelLimit = 5;
 
 	self.load = function()
 	{
