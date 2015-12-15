@@ -21,6 +21,8 @@
     "angular-route": "~1.4.8",
     "angular-ui-router": "~0.2.15",
     "angular": "~1.4.8",
-    "md-data-table": "*"
+    "md-data-table": "*",
+    "font-awesome": "~4.5.0",
+    "material-design-icons": "~2.1.1"
   }
 }

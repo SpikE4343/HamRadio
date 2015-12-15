@@ -1,18 +1,11 @@
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+.card-holder {
+  background-color: #eee;
 }
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: sans-serif;
+  background-color: #eee;
 }
-a {
-  text-decoration: none;
+md-toolbar h1 {
+  margin: auto;
 }
 .container {
   text-align: center;
