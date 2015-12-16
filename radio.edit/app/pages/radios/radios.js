@@ -3,5 +3,12 @@ angular.module('app')
 
 function MainPageController(radioService, $q, $mdDialog) {
 	var self = this;
-	self.radios = [];
+  self.error = null;
+  self.radios = null;
+
+  radioService.list().then( function(list){
+    self.radios = list;
+  }, function(err){
+    self.error = err;
+  });
 }

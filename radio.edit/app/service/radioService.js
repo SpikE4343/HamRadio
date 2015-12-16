@@ -10,8 +10,34 @@ var mapping = {
 	'AH034$' : 'ftm-400'
 }
 
+var saves = [
+	{
+		name:'kk6ugn',
+		file:'data/saves/ftm-400.dat',
+		model:'FTM-400',
+		vender:'Yaesu'
+	},
+
+	{
+		name:'kk6nlw',
+		file:'data/saves/kk6nlw-ftm-400.dat',
+		model:'FTM-400',
+		vender:'Yaesu'
+	}
+];
+
 function radioService($q)
 {
+	function list()
+	{
+		var d = $q.defer();
+
+		setTimeout(function(){
+			d.resolve(saves);
+		}, 1000);
+		return d.promise;
+	}
+
 	function loadMappings()
 	{
 		// parse all .json files in mapping folder
@@ -178,6 +204,7 @@ function radioService($q)
 
 	return {
 		load: loadRadio,
-		save: saveRadio
+		save: saveRadio,
+		list: list
 	};
 }

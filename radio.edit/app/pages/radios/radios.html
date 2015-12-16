@@ -1,21 +1,32 @@
 
     <md-toolbar class="md-toolbar-tools" layout="row" class="md-whiteframe-z1">
         <md-button class="md-icon-button" aria-label="Settings">
-          <ng-md-icon icon="settings_input_antenna"></ng-md-icon>
+          <md-icon>settings_input_antenna</md-icon>
         </md-button>
         <h2>
           <span>Tune</span>
         </h2>
         <span flex></span>
         <md-button class="md-icon-button" aria-label="Settings">
-          <ng-md-icon icon="search"></ng-md-icon>
+          <md-icon>search</md-icon>
         </md-button>
         <md-button aria-label="Open Settings">
-            <ng-md-icon icon="more_vert"></ng-md-icon>
+            <md-icon>more_vert</md-icon>
         </md-button>
 
     </md-toolbar>
 
     <md-content class="card-holder md-padding" layout="row" layout-wrap layout-align="center start">
-
+      <md-progress-circular ng-hide="_ctrl.radios != null" md-mode="indeterminate"></md-progress-circular>
+      <md-card ng-repeat="radio in _ctrl.radios">
+        <md-card-header>
+          <md-card-avatar>
+            <md-icon class="md-avatar-icon">memory</md-icon>
+          </md-card-avatar>
+          <md-card-header-text>
+            <span class="md-title">{{radio.name}}</span>
+            <span class="md-subhead">{{radio.file}}</span>
+          </md-card-header-text>
+        </md-card-header>
+      </md-card>
     </md-content>
