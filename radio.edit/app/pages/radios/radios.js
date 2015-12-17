@@ -1,14 +1,19 @@
 angular.module('app')
-       .controller('MainPageController', ['radioService', '$q', '$mdDialog', MainPageController]);
+       .controller('RadiosController', ['$mdDialog', RadiosController]);
 
-function MainPageController(radioService, $q, $mdDialog) {
+function RadiosController($mdDialog) {
 	var self = this;
-  self.error = null;
-  self.radios = null;
+  self.pages = [
+      {
+        name: 'Radios',
+        icon: 'home',
+        state: 'radios.list'
+      },
 
-  radioService.list().then( function(list){
-    self.radios = list;
-  }, function(err){
-    self.error = err;
-  });
+      {
+        name: 'Memory Maps',
+        icon: 'memory',
+        state: 'mmap.list'
+      }
+  ];
 }

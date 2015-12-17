@@ -13,14 +13,14 @@ var mapping = {
 var saves = [
 	{
 		name:'kk6ugn',
-		file:'data/saves/ftm-400.dat',
+		file:'ftm-400.dat',
 		model:'FTM-400',
 		vender:'Yaesu'
 	},
 
 	{
 		name:'kk6nlw',
-		file:'data/saves/kk6nlw-ftm-400.dat',
+		file:'kk6nlw-ftm-400.dat',
 		model:'FTM-400',
 		vender:'Yaesu'
 	}

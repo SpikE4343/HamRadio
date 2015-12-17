@@ -1,32 +1,38 @@
 
-    <md-toolbar class="md-toolbar-tools" layout="row" class="md-whiteframe-z1">
-        <md-button class="md-icon-button" aria-label="Settings">
-          <md-icon>settings_input_antenna</md-icon>
-        </md-button>
-        <h2>
-          <span>Tune</span>
-        </h2>
-        <span flex></span>
-        <md-button class="md-icon-button" aria-label="Settings">
-          <md-icon>search</md-icon>
-        </md-button>
-        <md-button aria-label="Open Settings">
-            <md-icon>more_vert</md-icon>
-        </md-button>
+
+<div layout="row" flex layout-fill>
+  <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+
+    <md-toolbar class="md-toolbar-tools md-whiteframe-z1" layout="row">
 
     </md-toolbar>
 
-    <md-content class="card-holder md-padding" layout="row" layout-wrap layout-align="center start">
-      <md-progress-circular ng-hide="_ctrl.radios != null" md-mode="indeterminate"></md-progress-circular>
-      <md-card ng-repeat="radio in _ctrl.radios">
-        <md-card-header>
-          <md-card-avatar>
-            <md-icon class="md-avatar-icon">memory</md-icon>
-          </md-card-avatar>
-          <md-card-header-text>
-            <span class="md-title">{{radio.name}}</span>
-            <span class="md-subhead">{{radio.file}}</span>
-          </md-card-header-text>
-        </md-card-header>
-      </md-card>
-    </md-content>
+    <md-list>
+        <md-list-item ng-repeat="page in c.pages" layout="row" ui-sref="{{page.state}}">
+            <md-icon >{{page.icon}}</md-icon>
+            <p class="md-body-2">
+              {{page.name}}
+            </p>
+        </md-list-item>
+    </md-list>
+  </md-sidenav>
+
+  <md-content class="main-content" layout="column" flex>
+    <md-toolbar class="md-toolbar-tools md-whiteframe-z1" layout="row">
+      <md-button class="md-icon-button" aria-label="Settings">
+        <md-icon>settings_input_antenna</md-icon>
+      </md-button>
+      <h2>
+        <span>Tune</span>
+      </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" aria-label="Settings">
+        <md-icon>search</md-icon>
+      </md-button>
+      <md-button aria-label="Open Settings">
+          <md-icon>more_vert</md-icon>
+      </md-button>
+    </md-toolbar>
+    <div flex ui-view></div>
+  </md-content>
+</div>

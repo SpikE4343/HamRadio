@@ -5,29 +5,37 @@ var app = angular.module('app', [
     'ngMdIcons'
 ]).config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
 
-    $urlRouterProvider.when('', '/radios');
-    $urlRouterProvider.otherwise('/radios');
+    $urlRouterProvider.when("", "/radios/list");
+    $urlRouterProvider.when("/", "/radios/list");
+
+    // For any unmatched url, send to /route1
+    $urlRouterProvider.otherwise("/radios/list");
 
     $stateProvider
 
         // HOME STATES AND NESTED VIEWS ========================================
         .state('radios', {
+            abstract: true,
             url: '/radios',
             templateUrl: 'pages/radios/radios.html',
+            controller: 'RadiosController',
+            controllerAs: 'c'
+        })
+        .state('radios.list', {
+            url: '/list',
+            templateUrl: 'pages/radios/list.html',
             controller: 'MainPageController',
             controllerAs: '_ctrl'
         })
-        .state('detail', {
-            url: '/detail/:id',
-            templateUrl: 'pages/detail/detail.html',
+        .state('radios.detail', {
+            url: '/:id',
+            templateUrl: 'pages/radios/detail.html',
             controller: 'DetailController',
             controllerAs: 'd'
         })
 
-        // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-        .state('about', {
-            // we'll get to this in a bit
-        });
+
+        ;
 
 
     $mdThemingProvider
