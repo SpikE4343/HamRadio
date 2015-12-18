@@ -1,14 +1,23 @@
 
 
 <div layout="row" flex layout-fill>
-  <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-
-    <md-toolbar class="md-toolbar-tools md-whiteframe-z1" layout="row">
-
+  <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z1"
+              md-component-id="nav"
+              md-is-locked-open="$mdMedia('gt-sm')" >
+    <!-- md-is-locked-open="$mdMedia('gt-sm')" -->
+    <md-toolbar class="md-toolbar-tools md-whiteframe-z1"
+                layout="row">
+      <md-button class="md-icon-button"
+                 aria-label="Settings"
+                 ng-click="c.toggleNavDrawer()">
+        <md-icon>settings_input_antenna</md-icon>
+      </md-button>
     </md-toolbar>
 
     <md-list>
-        <md-list-item ng-repeat="page in c.pages" layout="row" ui-sref="{{page.state}}">
+        <md-list-item ng-repeat="page in c.pages"
+                      layout="row"
+                      ui-sref="{{page.state}}">
             <md-icon >{{page.icon}}</md-icon>
             <p class="md-body-2">
               {{page.name}}
@@ -19,11 +28,11 @@
 
   <md-content class="main-content" layout="column" flex>
     <md-toolbar class="md-toolbar-tools md-whiteframe-z1" layout="row">
-      <md-button class="md-icon-button" aria-label="Settings">
+      <md-button ng-hide="c.isNavDrawerOpen()"class="md-icon-button" aria-label="Settings" ng-click="c.toggleNavDrawer()">
         <md-icon>settings_input_antenna</md-icon>
       </md-button>
       <h2>
-        <span>Tugn</span>
+        <span>Tugne</span>
       </h2>
       <span flex></span>
       <md-button class="md-icon-button" aria-label="Settings">
