@@ -16,7 +16,7 @@ function DetailController(radioService, $q, $mdDialog, $stateParams) {
 
 	self.load = function( id )
 	{
-    radioService.load( id )
+    radioService.load( 'app/data/saves/' + id )
       .then( function( radio )
       {
         self.radio = radio;

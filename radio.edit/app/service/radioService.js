@@ -13,7 +13,7 @@ var mapping = {
 var saves = [
 	{
 		name:'kk6ugn',
-		file:'ftm-400.dat',
+		file:'kk6ugn-ftm-400.dat',
 		model:'FTM-400',
 		vender:'Yaesu'
 	},
@@ -34,7 +34,7 @@ function radioService($q)
 
 		setTimeout(function(){
 			d.resolve(saves);
-		}, 1000);
+		}, 10);
 		return d.promise;
 	}
 
