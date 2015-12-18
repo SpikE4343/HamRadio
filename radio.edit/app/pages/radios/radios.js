@@ -1,7 +1,7 @@
 angular.module('app')
-       .controller('RadiosController', ['$mdDialog', '$mdSidenav', RadiosController]);
+       .controller('RadiosController', ['$mdDialog', '$mdSidenav', 'radioToolbar', RadiosController]);
 
-function RadiosController($mdDialog, $mdSidenav) {
+function RadiosController($mdDialog, $mdSidenav, radioToolbar) {
 	var self = this;
   self.pages = [
       {
@@ -21,8 +21,16 @@ function RadiosController($mdDialog, $mdSidenav) {
     return $mdSidenav('nav').isOpen() ||
            $mdSidenav('nav').isLockedOpen();
   };
-  
+
   self.toggleNavDrawer = function() {
     $mdSidenav('nav').toggle();
   };
+
+  self.closeNavDrawer = function() {
+    $mdSidenav('nav').close();
+  }
+
+  self.navs = function() {
+    return radioToolbar.navs;
+  }
 }

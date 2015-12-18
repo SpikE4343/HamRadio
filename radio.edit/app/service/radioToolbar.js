@@ -1,24 +1,16 @@
 angular.module('app')
-	.service('radioToolbar', ['$q', radioToolbar]);
-
-function radioToolbar($q)
+	.service('radioToolbar', function radioToolbar($q)
 {
 	self = this;
 	self.navs = [];
 
-	function pushNav(page)
+	self.push = function(page)
 	{
 		self.navs.push(page);
-	}
-
-	function popNav()
-	{
-		self.navs.unshift();
-	}
-
-	return {
-		pushNav: pushNav,
-		popNav: popNav
-		navs: self.navs;
 	};
-}
+
+	self.pop = function()
+	{
+		self.navs.pop();
+	};
+});

@@ -44,7 +44,14 @@
             <md-content layout-padding flex id="content">
                 <md-toolbar>
                     <div class="md-toolbar-tools">
-                        <div class="md-title">Bands</div>
+                      <h2><span>Bands</span></h2>
+                      <span flex></span>
+                      <md-button class="md-icon-button" aria-label="Favorite">
+                          <md-icon>view_list</md-icon>
+                      </md-button>
+                      <md-button ng-disabled="true" class="md-icon-button" aria-label="Favorite">
+                          <md-icon>view_module</md-icon>
+                      </md-button>
                     </div>
                 </md-toolbar>
                 <md-tabs md-dynamic-height md-border-bottom>

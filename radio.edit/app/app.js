@@ -19,19 +19,40 @@ var app = angular.module('app', [
             url: '/radios',
             templateUrl: 'pages/radios/radios.html',
             controller: 'RadiosController',
-            controllerAs: 'c'
+            controllerAs: 'c',
+            onEnter: ['radioToolbar', function( radioToolbar ){
+              //radioToolbar.push( 'Radios' );
+            }],
+            onExit: ['radioToolbar', function( radioToolbar ){
+              //radioToolbar.pop();
+            }],
         })
         .state('radios.list', {
             url: '/list',
             templateUrl: 'pages/radios/list.html',
             controller: 'MainPageController',
-            controllerAs: '_ctrl'
+            controllerAs: '_ctrl',
+            onEnter: ['radioToolbar', function( radioToolbar ){
+              //radioToolbar.push( 'All' );
+            }],
+            onExit: ['radioToolbar', function( radioToolbar ){
+              //radioToolbar.pop();
+            }],
         })
         .state('radios.detail', {
             url: '/:id',
             templateUrl: 'pages/radios/detail.html',
             controller: 'DetailController',
-            controllerAs: 'd'
+            controllerAs: 'd',
+            onEnter: ['radioService', 'radioToolbar', '$stateParams', function( radioService, radioToolbar, $stateParams ){
+              // var radio = radioService.radioInfo($stateParams.id);
+              // if( radio ) {
+              //   radioToolbar.push( radio.name );
+              // }
+            }],
+            onExit: ['radioToolbar', function( radioToolbar ){
+              // radioToolbar.pop();
+            }],
         })
 
 

@@ -1,50 +1,52 @@
-angular.module('app')
-	.service('radioService', ['$q', radioService]);
-
-
 var bcd = require('bcd');
 var bit = require('bit-buffer');
 var fs = require('fs');
 
+// TODO: move to memory map service
 var mapping = {
 	'AH034$' : 'ftm-400'
 }
 
-var saves = [
-	{
-		name:'kk6ugn',
-		file:'kk6ugn-ftm-400.dat',
-		model:'FTM-400',
-		vender:'Yaesu'
-	},
 
-	{
-		name:'kk6nlw',
-		file:'kk6nlw-ftm-400.dat',
-		model:'FTM-400',
-		vender:'Yaesu'
-	}
-];
 
-function radioService($q)
+angular.module('app')
+	.service('radioService', function ($q)
 {
-	function list()
+	self = this;
+
+	self.saves = [
+		{
+			name:'kk6ugn',
+			file:'kk6ugn-ftm-400.dat',
+			model:'FTM-400',
+			vender:'Yaesu'
+		},
+
+		{
+			name:'kk6nlw',
+			file:'kk6nlw-ftm-400.dat',
+			model:'FTM-400',
+			vender:'Yaesu'
+		}
+	];
+
+	self.list = function()
 	{
 		var d = $q.defer();
 
 		setTimeout(function(){
-			d.resolve(saves);
+			d.resolve(self.saves);
 		}, 10);
 		return d.promise;
-	}
+	};
 
-	function loadMappings()
+	self.loadMappings = function ()
 	{
 		// parse all .json files in mapping folder
 		// linking file.marker -> filename
-	}
+	};
 
-	function buildRadioFromMap( mmap )
+	self.buildRadioFromMap = function( mmap )
 	{
 		var radio = {
 			map: mmap,
@@ -67,9 +69,14 @@ function radioService($q)
 		}
 
 		return radio;
-	}
+	};
 
-	function loadRadio( filename )
+	self.load = function( id )
+	{
+		return self.loadRadio( 'app/data/saves/' + self.saves[id].file );
+	};
+
+	self.loadRadio = function ( filename )
 	{
 		var p = $q.defer();
 		fs.readFile( filename, function( err, data )
@@ -99,17 +106,17 @@ function radioService($q)
 					}
 
 					var mmap = JSON.parse(mapData);
-					var radio = buildRadioFromMap( mmap );
-					parseRadio( radio, data);
+					var radio = self.buildRadioFromMap( mmap );
+					self.parseRadio( radio, data);
 
 					p.resolve( radio );
 			});
 		});
 
 		return p.promise;
-	}
+	};
 
-  function parseSettings( settings, map, buffer )
+  self.parseSettings = function ( settings, map, buffer )
 	{
 		for (var name in map)
 		{
@@ -125,12 +132,12 @@ function radioService($q)
 			else if( setting.type === 'group')
 			{
 				settings[name] = {group:true};
-				parseSettings( settings[name], setting, buffer);
+				self.parseSettings( settings[name], setting, buffer);
 			}
 		}
-	}
+	};
 
-	function parseField( channel, name, def, buffer, bits)
+	self.parseField = function ( channel, name, def, buffer, bits)
 	{
 		var value = null;
 		if( def.hasOwnProperty('bits'))
@@ -142,12 +149,17 @@ function radioService($q)
 		{
 			value = bcd.decode(buffer.slice(def.start, def.start+def.size));
 		}
+
+		if( Array.isArray( def.encoding) )
+		{
+			value = def.encoding[value];
+		}
 		//else if( def.encoding === '' )
 
 		channel.data[name] = value;
-	}
+	};
 
-	function parseChannels( channels, def, itemdef, buffer)
+	self.parseChannels = function ( channels, def, itemdef, buffer)
 	{
 		for (var i = 0; i < def.count; ++i)
 		{
@@ -165,46 +177,45 @@ function radioService($q)
 			};
 
 			for (var f in itemdef.fields ) {
-					parseField( channel, f, itemdef.fields[f], bytes, bits  );
+					self.parseField( channel, f, itemdef.fields[f], bytes, bits  );
 			}
 
 			channels.push( channel );
 		}
-	}
+	};
 
-	function parseBand( band, map, def, buffer)
+	self.parseBand = function ( band, map, def, buffer)
 	{
 		band.name = def.name;
-		band.page = 0;
+		band.page = 1;
 		band.channels = [];
 		var itemdef = map.items[def.channels.item];
-		parseChannels(band.channels, def.channels, itemdef, buffer );
-	}
+		self.parseChannels(band.channels, def.channels, itemdef, buffer );
+	};
 
-	function parseBands( bands, map, buffer )
+	self.parseBands = function ( bands, map, buffer )
 	{
 		for (var id in map.bands) {
 			var def = map.bands[id];
 			var band = bands[id] = {};
-			parseBand(band, map, def, buffer );
+			self.parseBand(band, map, def, buffer );
 		}
-	}
+	};
 
-	function parseRadio( radio, buffer )
+	self.parseRadio = function( radio, buffer )
 	{
 		var map = radio.map;
-		parseSettings( radio.settings, map.settings, buffer );
-		parseBands( radio.bands, map, buffer );
-	}
+		self.parseSettings( radio.settings, map.settings, buffer );
+		self.parseBands( radio.bands, map, buffer );
+	};
 
-	function saveRadio(file, radio)
+	self.save = function(file, radio)
 	{
 
-	}
-
-	return {
-		load: loadRadio,
-		save: saveRadio,
-		list: list
 	};
-}
+
+	self.radioInfo = function( id )
+	{
+		return self.saves[id];
+	};
+});

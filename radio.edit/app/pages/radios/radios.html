@@ -17,7 +17,8 @@
     <md-list>
         <md-list-item ng-repeat="page in c.pages"
                       layout="row"
-                      ui-sref="{{page.state}}">
+                      ui-sref="{{page.state}}"
+                      ng-click="c.closeNavDrawer()">
             <md-icon >{{page.icon}}</md-icon>
             <p class="md-body-2">
               {{page.name}}
@@ -33,6 +34,7 @@
       </md-button>
       <h2>
         <span>Tugne</span>
+        <span>{{c.navs()}}</span>
       </h2>
       <span flex></span>
       <md-button class="md-icon-button" aria-label="Settings">

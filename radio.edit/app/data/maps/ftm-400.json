@@ -64,24 +64,12 @@
     "channel": {
       "size": 16,
       "fields": {
-        "used": {
-          "label": "Used",
-          "encoding": "bool",
-          "show": false,
-          "bits": [
-            0,
-            1,
-            false
-          ]
-        },
-        "skip": {
-          "label": "Skip",
-          "encoding": "bool",
-          "bits": [
-            1,
-            2,
-            false
-          ]
+        "freq": {
+          "label": "Frequency",
+          "units": "Mhz",
+          "encoding": "bcd",
+          "start": 2,
+          "size": 3
         },
         "mode": {
           "label": "Mode",
@@ -98,12 +86,16 @@
             false
           ]
         },
-        "oddsplit": {
-          "label": "Odd Split",
-          "encoding": "bool",
+        "power": {
+          "label": "Power",
+          "encoding": [
+            "Hi",
+            "Mid",
+            "Low"
+          ],
           "bits": [
-            13,
-            1,
+            72,
+            2,
             false
           ]
         },
@@ -119,6 +111,15 @@
           "bits": [
             14,
             2,
+            false
+          ]
+        },
+        "offset": {
+          "label": "Offset",
+          "encoding": [],
+          "bits": [
+            104,
+            8,
             false
           ]
         },
@@ -139,19 +140,7 @@
             false
           ]
         },
-        "power": {
-          "label": "Power",
-          "encoding": [
-            "Hi",
-            "Mid",
-            "Low"
-          ],
-          "bits": [
-            72,
-            2,
-            false
-          ]
-        },
+
         "tone": {
           "label": "Tone",
           "encoding": [],
@@ -170,6 +159,37 @@
             false
           ]
         },
+
+        "used": {
+          "label": "Used",
+          "encoding": "bool",
+          "show": false,
+          "bits": [
+            0,
+            1,
+            false
+          ]
+        },
+        "skip": {
+          "label": "Skip",
+          "encoding": "bool",
+          "bits": [
+            1,
+            2,
+            false
+          ]
+        },
+
+        "oddsplit": {
+          "label": "Odd Split",
+          "encoding": "bool",
+          "bits": [
+            13,
+            1,
+            false
+          ]
+        },
+        
         "showalpha": {
           "label": "Show Alpha",
           "encoding": "bool",
@@ -179,22 +199,7 @@
             false
           ]
         },
-        "offset": {
-          "label": "Offset",
-          "encoding": [],
-          "bits": [
-            104,
-            8,
-            false
-          ]
-        },
-        "freq": {
-          "label": "Frequency",
-          "units": "Mhz",
-          "encoding": "bcd",
-          "start": 2,
-          "size": 3
-        },
+
         "split": {
           "label": "Split",
           "units": "Mhz",
