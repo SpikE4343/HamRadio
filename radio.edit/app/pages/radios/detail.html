@@ -18,16 +18,13 @@
 
     <md-progress-circular ng-show="d.radio == null && d.error != null"  md-mode="indeterminate"></md-progress-circular>
     <div ng-show="d.radio != null" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
-        <md-toolbar layout="row" class="md-whiteframe-z1">
-            <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List">
-                <md-icon md-svg-icon="menu"></md-icon>
-            </md-button>
+        <!-- <md-toolbar layout="row" class="md-whiteframe-z1">
             <h1>{{ d.radio.settings.callsign}}</h1>
-        </md-toolbar>
+        </md-toolbar> -->
 
         <section layout-padding >
             <md-content flex id="content">
-                <div layout="column" style="width:50%">
+                <div layout="row" flex style="width:50%">
                     <br />
                     <md-content layout-padding class="autoScroll">
 

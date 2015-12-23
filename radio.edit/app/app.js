@@ -21,10 +21,10 @@ var app = angular.module('app', [
             controller: 'RadiosController',
             controllerAs: 'c',
             onEnter: ['radioToolbar', function( radioToolbar ){
-              //radioToolbar.push( 'Radios' );
+              radioToolbar.push( 'Radios' );
             }],
             onExit: ['radioToolbar', function( radioToolbar ){
-              //radioToolbar.pop();
+              radioToolbar.pop();
             }],
         })
         .state('radios.list', {
@@ -33,10 +33,10 @@ var app = angular.module('app', [
             controller: 'MainPageController',
             controllerAs: '_ctrl',
             onEnter: ['radioToolbar', function( radioToolbar ){
-              //radioToolbar.push( 'All' );
+              radioToolbar.push( 'All' );
             }],
             onExit: ['radioToolbar', function( radioToolbar ){
-              //radioToolbar.pop();
+              radioToolbar.pop();
             }],
         })
         .state('radios.detail', {
@@ -45,13 +45,13 @@ var app = angular.module('app', [
             controller: 'DetailController',
             controllerAs: 'd',
             onEnter: ['radioService', 'radioToolbar', '$stateParams', function( radioService, radioToolbar, $stateParams ){
-              // var radio = radioService.radioInfo($stateParams.id);
-              // if( radio ) {
-              //   radioToolbar.push( radio.name );
-              // }
+               var radio = radioService.radioInfo($stateParams.id);
+               if( radio ) {
+                 radioToolbar.push( radio.name.toUpperCase() );
+               }
             }],
             onExit: ['radioToolbar', function( radioToolbar ){
-              // radioToolbar.pop();
+               radioToolbar.pop();
             }],
         })
 
@@ -62,8 +62,9 @@ var app = angular.module('app', [
     $mdThemingProvider
         .theme('default')
         .primaryPalette('blue')
-        .accentPalette('orange');
-
+        //.accentPalette('orange')
+        //.primaryPalette('orange')
+        //.dark()
         ;
 
 }).filter('keyboardShortcut', function($window) {

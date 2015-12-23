@@ -16,14 +16,14 @@ angular.module('app')
 
 	self.saves = [
 		{
-			name:'kk6ugn',
+			name:'KK6UGN',
 			file:'kk6ugn-ftm-400.dat',
 			model:'FTM-400',
 			vender:'Yaesu'
 		},
 
 		{
-			name:'kk6nlw',
+			name:'KK6NLW',
 			file:'kk6nlw-ftm-400.dat',
 			model:'FTM-400',
 			vender:'Yaesu'

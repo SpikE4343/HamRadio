@@ -1,7 +1,9 @@
 angular.module('app')
-	.service('radioToolbar', function radioToolbar($q)
+	.service('radioToolbar', radioToolbar);
+
+function radioToolbar($q)
 {
-	self = this;
+	var self = {};
 	self.navs = [];
 
 	self.push = function(page)
@@ -13,4 +15,6 @@ angular.module('app')
 	{
 		self.navs.pop();
 	};
-});
+
+	return self;
+}
