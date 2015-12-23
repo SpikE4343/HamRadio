@@ -143,6 +143,11 @@ angular.module('app')
 			value = bits.getBits( def.bits[0], def.bits[1], def.bits[2]);
 		}
 
+		if( def.hasOwnProperty('ref'))
+		{
+			value = { _ref: def['ref']};
+		}
+
 		if( def.encoding === 'bcd' )
 		{
 			value = bcd.decode(buffer.slice(def.start, def.start+def.size));
@@ -182,6 +187,8 @@ angular.module('app')
 				data: {}
 			};
 
+			self.channel = channel;
+
 			for (var f in itemdef.fields ) {
 					self.parseField( channel, f, itemdef.fields[f], bytes, bits  );
 			}
@@ -217,10 +224,7 @@ angular.module('app')
 
 	self.parseBand = function ( band, map, def, buffer)
 	{
-		band.name = def.name;
-		band.page = 1;
-		band.channels = [];
-		band.labels = [];
+		self.band = band;
 		var itemdef = map.items[def.channels.item];
 		self.parseChannels(band.channels, def.channels, itemdef, buffer );
 
@@ -232,7 +236,12 @@ angular.module('app')
 	{
 		for (var id in map.bands) {
 			var def = map.bands[id];
-			var band = bands[id] = {};
+			var band = bands[id] = {
+				name: def.name,
+				page: 1,
+				channels: [],
+				labels: []
+			};
 			self.parseBand(band, map, def, buffer );
 		}
 	};
@@ -240,6 +249,7 @@ angular.module('app')
 	self.parseRadio = function( radio, buffer )
 	{
 		var map = radio.map;
+		self.buffer = buffer;
 		self.parseSettings( radio.settings, map.settings, buffer );
 		self.parseBands( radio.bands, map, buffer );
 	};
@@ -247,6 +257,17 @@ angular.module('app')
 	self.save = function(file, radio)
 	{
 
+	};
+
+	self.getFieldData = function( id, band, channel, name ){
+		var data = channel.data[name];
+		if( data._ref !== undefined)
+		{
+			var ref = data._ref.split('.');
+			data = band[ref[0]][id].data[ref[1]];
+		}
+
+		return data;
 	};
 
 	self.radioInfo = function( id )
