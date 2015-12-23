@@ -63,7 +63,7 @@
                                 <tbody>
                                     <tr md-auto-select ng-repeat="channel in band.channels | limitTo: d.channelLimit: (band.page - 1) * d.channelLimit">
                                         <td ng-repeat="(fieldName, field) in d.radio.map.items.channel.fields">
-                                          {{channel.data[fieldName]}}
+                                          {{d.getFieldData(channel.id, band, channel, fieldName)}}
                                         </td>
                                     </tr>
                                 </tbody>

@@ -5,9 +5,7 @@ var fs = require('fs');
 // TODO: move to memory map service
 var mapping = {
 	'AH034$' : 'ftm-400'
-}
-
-
+};
 
 angular.module('app')
 	.service('radioService', function ($q)
@@ -107,7 +105,7 @@ angular.module('app')
 
 					var mmap = JSON.parse(mapData);
 					var radio = self.buildRadioFromMap( mmap );
-					self.parseRadio( radio, data);
+					self.parseRadio( radio, data );
 
 					p.resolve( radio );
 			});
@@ -137,7 +135,7 @@ angular.module('app')
 		}
 	};
 
-	self.parseField = function ( channel, name, def, buffer, bits)
+	self.parseField = function ( label, name, def, buffer, bits)
 	{
 		var value = null;
 		if( def.hasOwnProperty('bits'))
@@ -145,18 +143,31 @@ angular.module('app')
 			value = bits.getBits( def.bits[0], def.bits[1], def.bits[2]);
 		}
 
+		if( def.hasOwnProperty('ref'))
+		{
+			value = { _ref: def['ref']};
+		}
+
 		if( def.encoding === 'bcd' )
 		{
 			value = bcd.decode(buffer.slice(def.start, def.start+def.size));
 		}
-
-		if( Array.isArray( def.encoding) )
+		else if( Array.isArray( def.encoding) )
 		{
 			value = def.encoding[value];
 		}
+		else if( typeof( def.encoding ) === 'object')
+		{
+			var rawLabel = buffer.slice(def.start, def.start+def.size);
+			var mapping = def.encoding['mapping'];
+			value = "";
+			for (var i = 0; i < def.size; i++) {
+				value += mapping.charAt(rawLabel[i]);
+			}
+		}
 		//else if( def.encoding === '' )
 
-		channel.data[name] = value;
+		label.data[name] = value;
 	};
 
 	self.parseChannels = function ( channels, def, itemdef, buffer)
@@ -176,6 +187,8 @@ angular.module('app')
 				data: {}
 			};
 
+			self.channel = channel;
+
 			for (var f in itemdef.fields ) {
 					self.parseField( channel, f, itemdef.fields[f], bytes, bits  );
 			}
@@ -184,20 +197,51 @@ angular.module('app')
 		}
 	};
 
+	self.parseLabels = function ( labels, def, itemdef, buffer)
+	{
+		for (var i = 0; i < def.count; ++i)
+		{
+			var start = def.start + i * itemdef.size;
+			var end = start + itemdef.size;
+
+			var bytes = buffer.slice(start, end);
+			var bits = new bit.BitView( bytes );
+
+			var label = {
+				id: i+1,
+				start: start,
+				end: end,
+				data: {}
+			};
+
+			for (var f in itemdef.fields ) {
+					self.parseField( label, f, itemdef.fields[f], bytes, bits  );
+			}
+
+			labels.push( label );
+		}
+	};
+
 	self.parseBand = function ( band, map, def, buffer)
 	{
-		band.name = def.name;
-		band.page = 1;
-		band.channels = [];
+		self.band = band;
 		var itemdef = map.items[def.channels.item];
 		self.parseChannels(band.channels, def.channels, itemdef, buffer );
+
+		var labeldef = map.items[def.labels.item ];
+		self.parseLabels( band.labels, def.labels, labeldef, buffer);
 	};
 
 	self.parseBands = function ( bands, map, buffer )
 	{
 		for (var id in map.bands) {
 			var def = map.bands[id];
-			var band = bands[id] = {};
+			var band = bands[id] = {
+				name: def.name,
+				page: 1,
+				channels: [],
+				labels: []
+			};
 			self.parseBand(band, map, def, buffer );
 		}
 	};
@@ -205,6 +249,7 @@ angular.module('app')
 	self.parseRadio = function( radio, buffer )
 	{
 		var map = radio.map;
+		self.buffer = buffer;
 		self.parseSettings( radio.settings, map.settings, buffer );
 		self.parseBands( radio.bands, map, buffer );
 	};
@@ -212,6 +257,17 @@ angular.module('app')
 	self.save = function(file, radio)
 	{
 
+	};
+
+	self.getFieldData = function( id, band, channel, name ){
+		var data = channel.data[name];
+		if( data._ref !== undefined)
+		{
+			var ref = data._ref.split('.');
+			data = band[ref[0]][id].data[ref[1]];
+		}
+
+		return data;
 	};
 
 	self.radioInfo = function( id )
