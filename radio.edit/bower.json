@@ -1,0 +1,34 @@
+{
+  "name": "radio.edit",
+  "description": "Ham radio memory editor",
+  "main": "app/app.js",
+  "authors": [
+    "jrohrssen <johnrohrssen@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/SpikE4343/HamRadio",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material-data-table": "~0.8.14",
+    "angular-route": "~1.4.8",
+    "angular-ui-router": "~0.2.15",
+    "angular": "~1.4.8",
+    "md-data-table": "*",
+    "font-awesome": "~4.5.0",
+    "angular-material": "^1.0.9",
+    "angular-material-icons": "^0.7.0"
+  },
+  "resolutions": {
+    "angular-material": "^1.0.9",
+    "angular": "~1.4.8",
+    "angular-material-icons": "^0.7.0"
+  }
+}

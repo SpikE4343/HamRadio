@@ -54,7 +54,7 @@ struct mem {
 };
 
 struct lab {
-  u8 string[8];
+  char string[8];
 };
 
 #seekto 0x02B8;
@@ -126,7 +126,7 @@ def _clone_in(radio):
     radio.pipe.setTimeout(1)
     attempts = 30
 
-    f = open('ftm-400.dump', 'w')
+    f = open('ftm-400-in.dump', 'w')
     
     data = memmap.MemoryMap("\x00" * (radio._memsize + 128))
     length = 0
@@ -171,7 +171,7 @@ def _clone_in(radio):
         radio.status_fn(status)
     
     
-    f.write( str(data) );
+    f.write( str(data) )
     f.close()
     return data
 
@@ -257,7 +257,7 @@ def set_freq(freq, obj, field):
 
 @directory.register
 class FTM400Radio(yaesu_clone.YaesuCloneModeRadio):
-    """Yaesu FTM-350"""
+    """Yaesu FTM-400"""
     BAUD_RATE = 48000
     VENDOR = "Yaesu"
     MODEL = "FTM-400"
@@ -290,7 +290,7 @@ class FTM400Radio(yaesu_clone.YaesuCloneModeRadio):
         return rf
 
     def get_sub_devices(self):
-        return [FTM350RadioLeft(self._mmap), FTM350RadioRight(self._mmap)]
+        return [FTM400RadioLeft(self._mmap), FTM400RadioRight(self._mmap)]
 
     def sync_in(self):
         try:

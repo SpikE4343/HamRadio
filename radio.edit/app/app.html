@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tugn</title>
+
+    <link rel="stylesheet" href="../bower_components/angular-material/angular-material.min.css" />
+    <link rel="stylesheet" href="../bower_components/angular-material-data-table/dist/md-data-table.min.css" />
+    <link href="./stylesheets/main.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body ng-app="app">
+
+    <div role="main" flex ui-view layout-fill></div>
+
+    <!-- build:js scripts/vendor.js -->
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/angular-aria/angular-aria.js"></script>
+    <script src="../bower_components/angular-material/angular-material.js"></script>
+    <script src="../bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+    <script src="../bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+
+    <!-- endbuild -->
+
+    <!-- build:app scripts/app.js -->
+    <script src="app.js"></script>
+    <script src="service/radio.js"></script>
+    <script src="service/radioService.js"></script>
+    <script src="service/radioToolbar.js"></script>
+    <script src="pages/radios/radios.js"></script>
+    <script src="pages/radios/list.js"></script>
+    <script src="pages/radios/detail.js"></script>
+    <!-- endbuild -->
+
+</body>
+</html>

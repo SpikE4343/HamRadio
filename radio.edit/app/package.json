@@ -1,0 +1,18 @@
+{
+  "name": "electron-boilerplate",
+  "productName": "Electron Boilerplate",
+  "identifier": "com.example.electron-boilerplate",
+  "description": "Starter for your Electron application. Out of the box ready for serious stuff.",
+  "version": "0.1.0",
+  "author": "Mr Gumby <gumby@sillywalks.com>",
+  "main": "background.js",
+  "config": {
+    "target": "development"
+  },
+  "dependencies": {
+    "bcd": "^1.0.0",
+    "binary-file": "^0.1.2",
+    "bit-buffer": "0.0.3",
+    "fs-jetpack": "^0.7.0"
+  }
+}
