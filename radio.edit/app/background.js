@@ -19,10 +19,7 @@ app.on('ready', function () {
     });
 
     mainWindow.loadURL('file://' + __dirname + '/app.html');
-   
-    
     mainWindow.on('close', function () {
-        
     });
 });
 

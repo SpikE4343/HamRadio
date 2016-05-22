@@ -1,6 +1,80 @@
 var bcd = require('bcd');
 var bit = require('bit-buffer');
 var fs = require('fs');
+var jBinary = require('jbinary');
+
+var ftm400Memory = {
+  'jBinary.littleEndian': true,
+  'jBinary.all': 'memory',
+
+  channel: {
+// uint8
+    used: [ 'bitfield', 1],
+    skip: [ 'bitfield', 2],
+    unknown1: ['bitfield', 5],
+// uint8
+    unknown2: ['bitfield', 1],
+    mode: ['bitfield', 3],
+    unknown3: ['bitfield', 1],
+    oddsplit: ['bitfield', 1],
+    duplex: ['bitfield', 2],
+// uint8 * 3
+    frequency: ['array',['bitfield', 4], 6 ],
+// uint8
+    unknown4: [ 'bitfield', 1],
+    tmode: ['bitfield', 3],
+    unknown5: [ 'bitfield', 4],
+// uint8 * 3
+    split: ['array',['bitfield', 4], 6 ],
+// uint8
+    power: [ 'bitfield', 2],
+    tone: [ 'bitfield', 6],
+// uint8
+    unknown6: [ 'bitfield', 1],
+    dtcs: [ 'bitfield', 7],
+// uint8
+    showalpha: [ 'bitfield', 1],
+    unknown7: [ 'bitfield', 7],
+// unit8
+    unknown8: 'uint8',
+    offset: 'uint8',
+    unknown9: ['array','uint8', 2],
+  },
+
+	band: {
+		channels: [ 'array', 'channel', 500]
+	},
+
+  label: ['array', 'char', 8],
+	labels: [ 'array', 'label', 518 ],
+
+	home: {
+		channel: 'channel',
+		label: 'labels'
+	},
+
+	options: {
+		callsign: ['string', 10]
+	},
+
+	memory: {
+		tag: ['string', 6],
+    unknown1: ['blob', 690],
+    settings: 'options',
+
+		unknown2: ['blob', 1342],
+
+		// home: ['array', 'home', 2],
+    //radio0: 'channel',
+    //label0: 'label',
+    //radio1: 'channel',
+    //label1: 'label',
+
+		bands: ['array', 'band', 2],
+    labels: ['array', 'labels', 2],
+	}
+};
+
 
 // TODO: move to memory map service
 var mapping = {
@@ -17,261 +91,211 @@ angular.module('app')
 			name:'KK6UGN',
 			file:'kk6ugn-ftm-400.dat',
 			model:'FTM-400',
-			vender:'Yaesu'
+			vender:'Yaesu',
+			typeset: ftm400Memory,
+      map:{
+        "items": {
+        "channel": {
+          "size": 16,
+          "fields": {
+            "frequency": {
+              "label": "Frequency",
+              "units": "Mhz",
+              "encoding": "bcd",
+              "start": 2,
+              "size": 3
+            },
+            // "name": {
+            //   "label": "Label",
+            //   "ref" : "labels.label",
+            //   "start": 0,
+            //   "size": 8
+            // },
+            "mode": {
+              "label": "Mode",
+              "encoding": [
+                "FM",
+                "AM",
+                "NFM",
+                "",
+                "WFM"
+              ],
+              "bits": [
+                9,
+                3,
+                false
+              ]
+            },
+            "power": {
+              "label": "Power",
+              "encoding": [
+                "Hi",
+                "Mid",
+                "Low"
+              ],
+              "bits": [
+                72,
+                2,
+                false
+              ]
+            },
+            "duplex": {
+              "label": "Duplex",
+              "encoding": [
+                "",
+                "",
+                "-",
+                "+",
+                "split"
+              ],
+              "bits": [
+                14,
+                2,
+                false
+              ]
+            },
+            "offset": {
+              "label": "Offset",
+              "encoding": [],
+              "bits": [
+                104,
+                8,
+                false
+              ]
+            },
+            "tmode": {
+              "label": "TMode",
+              "encoding": [
+                "",
+                "Tone",
+                "TSQL",
+                "-RVT",
+                "DTCS",
+                "-PR",
+                "-PAG"
+              ],
+              "bits": [
+                41,
+                3,
+                false
+              ]
+            },
+            "tone": {
+              "label": "Tone",
+              "encoding": [],
+              "bits": [
+                74,
+                2,
+                false
+              ]
+            },
+            "dtcs": {
+              "label": "DTCS",
+              "encoding": [],
+              "bits": [
+                81,
+                7,
+                false
+              ]
+            },
+
+            "used": {
+              "label": "Used",
+              "encoding": "bool",
+              "show": false,
+              "bits": [
+                0,
+                1,
+                false
+              ]
+            },
+            "skip": {
+              "label": "Skip",
+              "encoding": "bool",
+              "bits": [
+                1,
+                2,
+                false
+              ]
+            },
+
+            "oddsplit": {
+              "label": "Odd Split",
+              "encoding": "bool",
+              "bits": [
+                13,
+                1,
+                false
+              ]
+            },
+
+            "showalpha": {
+              "label": "Show Alpha",
+              "encoding": "bool",
+              "bits": [
+                88,
+                1,
+                false
+              ]
+            },
+
+            "split": {
+              "label": "Split",
+              "units": "Mhz",
+              "encoding": "bcd",
+              "start": 6,
+              "size": 3
+            }
+          }
+        },
+        "label": {
+          "size": 8,
+          "fields": {
+            "label": {
+              "label": "Label",
+              "encoding": {
+                "type": "string",
+                "mapping": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!\"#$%&`()*+,-./:;<=>?@[\\]^_`{|}~?????? ???????????????????????????????????????????????????????????????????????????????????????????"
+              },
+              "start": 0,
+              "size": 8
+            }
+          }
+        }
+      }}
+
 		},
 
 		{
 			name:'KK6NLW',
 			file:'kk6nlw-ftm-400.dat',
 			model:'FTM-400',
-			vender:'Yaesu'
+			vender:'Yaesu',
+			typeset: ftm400Memory
 		}
 	];
 
-	self.list = function()
-	{
+	self.list = function(){
 		var d = $q.defer();
 
 		setTimeout(function(){
 			d.resolve(self.saves);
 		}, 10);
+
 		return d.promise;
 	};
 
-	self.loadMappings = function ()
-	{
+	self.loadMappings = function (){
 		// parse all .json files in mapping folder
 		// linking file.marker -> filename
 	};
 
-	self.buildRadioFromMap = function( mmap )
-	{
-		var radio = {
-			map: mmap,
-			vendor: mmap.vendor,
-			name: mmap.model,
-			error: '',
-			settings: {},
-			bands: []
-		};
-
-		for (var def in mmap.bands )
-		{
-			var band = {
-				name: def.name,
-				channels: [],
-				labels: []
-			};
-
-			radio.bands.push( band );
-		}
-
-		return radio;
+	self.load = function( id ) {
+		var radio = new Radio(self.saves[id]);
+		return radio.load( 'app/data/saves/' );
 	};
 
-	self.load = function( id )
-	{
-		return self.loadRadio( 'app/data/saves/' + self.saves[id].file );
-	};
-
-	self.loadRadio = function ( filename )
-	{
-		var p = $q.defer();
-		fs.readFile( filename, function( err, data )
-		{
-			if( err )
-			{
-				p.reject( "Unable to load file: " + err);
-				return;
-			}
-
-			// read in beginning of config
-			var marker = data.toString('ascii', 0, 6);
-			if( !mapping.hasOwnProperty( marker ) )
-			{
-				p.reject( "Unkown file type: " + marker );
-				return;
-			}
-
-			var mapFile = mapping[marker];
-
-			fs.readFile( 'app/data/maps/'+mapFile+'.json', function (maperr, mapData)
-			{
-					if( maperr )
-					{
-						p.reject( 'Unable to load mapping file: ' + mapfile );
-						return;
-					}
-
-					var mmap = JSON.parse(mapData);
-					var radio = self.buildRadioFromMap( mmap );
-					self.parseRadio( radio, data );
-
-					p.resolve( radio );
-			});
-		});
-
-		return p.promise;
-	};
-
-  self.parseSettings = function ( settings, map, buffer )
-	{
-		for (var name in map)
-		{
-			var setting = map[name];
-			if( setting.type === 'string' )
-			{
-				settings[name] =
-						buffer.toString(
-							setting.encoding,
-							setting.start,
-							setting.start+setting.size);
-			}
-			else if( setting.type === 'group')
-			{
-				settings[name] = {group:true};
-				self.parseSettings( settings[name], setting, buffer);
-			}
-		}
-	};
-
-	self.parseField = function ( label, name, def, buffer, bits)
-	{
-		var value = null;
-		if( def.hasOwnProperty('bits'))
-		{
-			value = bits.getBits( def.bits[0], def.bits[1], def.bits[2]);
-		}
-
-		if( def.hasOwnProperty('ref'))
-		{
-			value = { _ref: def['ref']};
-		}
-
-		if( def.encoding === 'bcd' )
-		{
-			value = bcd.decode(buffer.slice(def.start, def.start+def.size));
-		}
-		else if( Array.isArray( def.encoding) )
-		{
-			value = def.encoding[value];
-		}
-		else if( typeof( def.encoding ) === 'object')
-		{
-			var rawLabel = buffer.slice(def.start, def.start+def.size);
-			var mapping = def.encoding['mapping'];
-			value = "";
-			for (var i = 0; i < def.size; i++) {
-				value += mapping.charAt(rawLabel[i]);
-			}
-		}
-		//else if( def.encoding === '' )
-
-		label.data[name] = value;
-	};
-
-	self.parseChannels = function ( channels, def, itemdef, buffer)
-	{
-		for (var i = 0; i < def.count; ++i)
-		{
-			var start = def.start + i * itemdef.size;
-			var end = start + itemdef.size;
-
-			var bytes = buffer.slice(start, end);
-			var bits = new bit.BitView( bytes );
-
-			var channel = {
-				id: i+1,
-				start: start,
-				end: end,
-				data: {}
-			};
-
-			self.channel = channel;
-
-			for (var f in itemdef.fields ) {
-					self.parseField( channel, f, itemdef.fields[f], bytes, bits  );
-			}
-
-			channels.push( channel );
-		}
-	};
-
-	self.parseLabels = function ( labels, def, itemdef, buffer)
-	{
-		for (var i = 0; i < def.count; ++i)
-		{
-			var start = def.start + i * itemdef.size;
-			var end = start + itemdef.size;
-
-			var bytes = buffer.slice(start, end);
-			var bits = new bit.BitView( bytes );
-
-			var label = {
-				id: i+1,
-				start: start,
-				end: end,
-				data: {}
-			};
-
-			for (var f in itemdef.fields ) {
-					self.parseField( label, f, itemdef.fields[f], bytes, bits  );
-			}
-
-			labels.push( label );
-		}
-	};
-
-	self.parseBand = function ( band, map, def, buffer)
-	{
-		self.band = band;
-		var itemdef = map.items[def.channels.item];
-		self.parseChannels(band.channels, def.channels, itemdef, buffer );
-
-		var labeldef = map.items[def.labels.item ];
-		self.parseLabels( band.labels, def.labels, labeldef, buffer);
-	};
-
-	self.parseBands = function ( bands, map, buffer )
-	{
-		for (var id in map.bands) {
-			var def = map.bands[id];
-			var band = bands[id] = {
-				name: def.name,
-				page: 1,
-				channels: [],
-				labels: []
-			};
-			self.parseBand(band, map, def, buffer );
-		}
-	};
-
-	self.parseRadio = function( radio, buffer )
-	{
-		var map = radio.map;
-		self.buffer = buffer;
-		self.parseSettings( radio.settings, map.settings, buffer );
-		self.parseBands( radio.bands, map, buffer );
-	};
-
-	self.save = function(file, radio)
-	{
-
-	};
-
-	self.getFieldData = function( id, band, channel, name ){
-		var data = channel.data[name];
-		if( data._ref !== undefined)
-		{
-			var ref = data._ref.split('.');
-			data = band[ref[0]][id].data[ref[1]];
-		}
-
-		return data;
-	};
-
-	self.radioInfo = function( id )
-	{
+	self.radioInfo = function( id ){
 		return self.saves[id];
 	};
 });

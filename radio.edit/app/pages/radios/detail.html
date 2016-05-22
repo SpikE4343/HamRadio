@@ -27,8 +27,7 @@
                 <div layout="row" flex style="width:50%">
                     <br />
                     <md-content layout-padding class="autoScroll">
-
-                        <md-input-container ng-repeat="(name, setting) in d.radio.settings">
+                        <md-input-container ng-repeat="(name, setting) in d.radio.data.settings">
                             <label>{{name}}</label>
                             <input ng-model="setting" type="text">
                         </md-input-container>
@@ -52,7 +51,7 @@
                     </div>
                 </md-toolbar>
                 <md-tabs md-dynamic-height md-border-bottom>
-                    <md-tab label="{{band.name}}" ng-repeat="band in d.radio.bands">
+                    <md-tab label="{{band.name}}" ng-repeat="band in d.radio.data.bands">
                         <md-data-table-container>
                             <table md-data-table class="md-primary" md-row-select="selected" md-progress="deferred">
                                 <thead md-order="query.order" md-trigger="onorderchange">
@@ -63,7 +62,7 @@
                                 <tbody>
                                     <tr md-auto-select ng-repeat="channel in band.channels | limitTo: d.channelLimit: (band.page - 1) * d.channelLimit">
                                         <td ng-repeat="(fieldName, field) in d.radio.map.items.channel.fields">
-                                          {{d.getFieldData(channel.id, band, channel, fieldName)}}
+                                          {{channel[fieldName]}}
                                         </td>
                                     </tr>
                                 </tbody>
