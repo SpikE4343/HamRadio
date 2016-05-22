@@ -1,48 +1,59 @@
 var fs = require('fs');
 var jBinary = require('jbinary');
-var Promise = require('promise');
 
-var Radio = function( info ){
-  this.filename = info.file;
+function Radio($q, info) {
+  var self = this;
+  self.filename = info.file;
   this.data = {};
   this._binary = {};
-
   this.typeset = info.typeset;
   this.name = info.name;
   this.vender = info.vender;
   this.model = info.model;
   this.map = info.map;
-};
 
-Radio.prototype = {
   ///
   // Read memory data from given file
   ///
-  load: function( path ) {
-    var self = this;
-    return new Promise( function( resolve, reject){
-      jBinary.load( path + self.filename, self.typeset, function( err, binary){
-        if( err ) {
-  				reject( "Unable to load file: " + err);
-  				return;
-  			}
+  self.load = function( path ) {
+    var p = $q.defer();
 
-        self._binary = binary;
-        self.data = self._binary.readAll();
-        resolve( self );
-      });
+    jBinary.load( path + self.filename, self.typeset, function( err, binary){
+      if( err ) {
+				p.reject( "Unable to load file: " + err);
+				return;
+			}
+
+      self._binary = binary;
+      self.data = self._binary.readAll();
+      p.resolve( self );
     });
-  },
+
+    return p.promise;
+  };
 
   ///
   // Write memory data to filename
   ///
-  save: function(filename) {
+  self.save = function(filename) {
     if( filename === undefined )
-      filename = this.filename;
+      filename = self.filename;
 
-    this._binary.seek(0);
-    this._binary.writeAll( this.data );
-    this._binary.saveAs( filename );
-  }
-};
+    self._binary.seek(0);
+    self._binary.writeAll( self.data );
+    self._binary.saveAs( filename );
+  };
+}
+
+angular
+  .module('app')
+  .factory('RadioFactory',[ '$q',
+    /** This is the factory method that Angular will execute only ONCE **/
+    function RadioFactory($q) {
+       /** This is the function that will be injected into the directive, and called multiple times by the programmer **/
+       return function(info) {
+           /** this is the new object that will be created and used by the programmer **/
+           return new Radio($q, info);
+       };
+    }
+  ]);
