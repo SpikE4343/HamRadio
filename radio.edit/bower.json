@@ -24,7 +24,8 @@
     "md-data-table": "*",
     "font-awesome": "~4.5.0",
     "angular-material": "^1.0.9",
-    "angular-material-icons": "^0.7.0"
+    "angular-material-icons": "^0.7.0",
+    "material-design-icons": "^2.2.3"
   },
   "resolutions": {
     "angular-material": "^1.0.9",
