@@ -13,11 +13,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    FTM400DR.cpp \
+    radiosettings.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    FTM400DR.h \
+    radiosettings.h
 
 #FORMS    +=
 
 RESOURCES += \
     tugnr_resc.qrc
+
+FORMS += \
+    radiosettings.ui

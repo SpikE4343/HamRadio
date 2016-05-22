@@ -43,7 +43,7 @@
 
 #include <QMainWindow>
 
-#include "../common/FTM400DR.h"
+#include "FTM400DR.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
