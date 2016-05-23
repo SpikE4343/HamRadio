@@ -28,9 +28,5 @@ function DetailController(radioService, $q, $mdDialog, $stateParams) {
       });
 	};
 
-  self.getFieldData = function( radio, band, channel, name){
-    return radioService.getFieldData( radio, band, channel, name);
-  };
-
 	self.load(self.id);
 }
