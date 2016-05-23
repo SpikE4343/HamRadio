@@ -27,7 +27,7 @@ function Radio($q, info) {
       self._binary = binary;
       self.data = self._binary.readAll();
       for (var band in self.data.bands)
-        band.page = 1;
+        self.data.bands[band].page = 1;
       p.resolve(self);
     });
 
