@@ -12,18 +12,19 @@ function DetailController(radioService, $q, $mdDialog, $stateParams) {
   self.id = $stateParams.id;
 	self.radio = null;
   self.error = null;
-  self.channelLimit = 5;
+  self.channelLimit = 10;
+  self.query = {
+    order: "id"
+  };
+  self.tableView = true;
+  self.selected = null;
 
-	self.load = function( id )
-	{
+	self.load = function( id ){
     radioService.load( id )
-      .then( function( radio )
-      {
+      .then( function( radio ){
         self.radio = radio;
         console.log(radio);
-      },
-      function(error)
-      {
+      },function(error){
           self.error = error;
       });
 	};
