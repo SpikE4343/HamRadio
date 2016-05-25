@@ -1,4 +1,29 @@
 <div flex layout="column" layout-fill>
+  <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z1"
+              md-component-id="nav"
+              md-is-locked-open="true" >
+    <!-- md-is-locked-open="$mdMedia('gt-sm')" -->
+    <md-toolbar class="md-toolbar-tools md-whiteframe-z1"
+                layout="row">
+      <md-button class="md-icon-button"
+                 aria-label="Settings"
+                 >
+        <md-icon>settings_input_antenna</md-icon>
+      </md-button>
+    </md-toolbar>
+
+    <md-list>
+        <md-list-item ng-repeat="page in c.pages"
+                      layout="row"
+                      ui-sref="{{page.state}}"
+                      ng-click="c.closeNavDrawer()">
+            <md-icon >{{page.icon}}</md-icon>
+            <p class="md-body-2">
+              {{page.name}}
+            </p>
+        </md-list-item>
+    </md-list>
+  </md-sidenav>
 <md-content class="card-holder md-padding" layout="row" layout-wrap layout-align="center start">
   <md-progress-circular ng-hide="_ctrl.radios != null" md-mode="indeterminate"></md-progress-circular>
   <md-card ng-repeat="radio in _ctrl.radios">

@@ -41,7 +41,7 @@ var ftm400Memory = {
     unknown9: ['array','uint8', 2],
   },
 
-	band: {
+	transcever: {
 		channels: [ 'array', 'channel', 518]
 	},
 
@@ -60,8 +60,16 @@ var ftm400Memory = {
 
   },
 
+  main_options: {
+    callsign: ['string', 10]
+  },
+
 	options: {
-		callsign: ['string', 10]
+    Main: 'main_options',
+    APRS: [
+      'aprsCallsign',
+      'aprsOptions'
+    ]
 	},
 
 	memory: {
@@ -77,7 +85,7 @@ var ftm400Memory = {
     //radio1: 'channel',
     //label1: 'label',
 
-		bands: ['array', 'band', 2],
+		transcevers: ['array', 'transcever', 2],
     labels: ['array', 'labellist', 2]
 	}
 };

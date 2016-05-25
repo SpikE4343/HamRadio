@@ -17,7 +17,8 @@ function DetailController(radioService, $q, $mdDialog, $stateParams) {
     order: "id"
   };
   self.tableView = true;
-  self.selected = null;
+  self.selected = [];
+  self.selection = {};
 
 	self.load = function( id ){
     radioService.load( id )
