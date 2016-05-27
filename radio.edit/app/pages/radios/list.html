@@ -1,6 +1,13 @@
-<div flex layout="column" layout-fill>
-<md-content class="card-holder md-padding" layout="row" layout-wrap layout-align="center start">
-  <md-progress-circular ng-hide="_ctrl.radios != null" md-mode="indeterminate"></md-progress-circular>
+<div flex layout="column">
+
+<md-progress-linear ng-hide="_ctrl.radios != null" md-mode="indeterminate"></md-progress-linear>
+
+<md-content
+  class="card-holder md-padding"
+  layout="row"
+  layout-wrap
+  layout-align="center start"
+  ng-cloak>
   <md-card ng-repeat="radio in _ctrl.radios">
     <md-card-header>
       <md-card-avatar>
@@ -18,9 +25,11 @@
     </md-card-title>
     <md-card-actions layout="row" layout-align="end center">
       <md-button class="md-icon-button" aria-label="Edit">
+        <md-tooltip>Edit</md-tooltip>
         <md-icon ui-sref="radios.detail({ id: $index })" >create</md-icon>
       </md-button>
       <md-button class="md-icon-button" aria-label="Delete">
+        <md-tooltip>Delete</md-tooltip>
         <md-icon >delete</md-icon>
       </md-button>
 

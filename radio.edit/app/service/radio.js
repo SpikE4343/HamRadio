@@ -26,8 +26,8 @@ function Radio($q, info) {
 
       self._binary = binary;
       self.data = self._binary.readAll();
-      for (var band in self.data.bands)
-        self.data.bands[band].page = 1;
+      for (var trans in self.data.transcevers)
+        self.data.transcevers[trans].page = 1;
       p.resolve(self);
     });
 
@@ -46,15 +46,15 @@ function Radio($q, info) {
     self._binary.saveAs(filename);
   };
 
-  self.channelFieldValue = function(band, channel, fieldName, value) {
+  self.channelFieldValue = function(trans, channel, fieldName, value) {
     var def = self.map.items.channel.fields[fieldName];
 
     var fieldValue = null;
     // reference to another data item
     if (def !== undefined && def.ref !== undefined && typeof(def.ref) === 'string') {
       var name = def.ref;
-      var bandId = self.data.bands.indexOf(band);
-      var channelId = band.channels.indexOf(channel);
+      var bandId = self.data.transcevers.indexOf(trans);
+      var channelId = trans.channels.indexOf(channel);
       fieldValue = self.data[name][bandId][channelId];
 
       if (value !== undefined)
@@ -101,7 +101,26 @@ function Radio($q, info) {
   // Convert human friendly version of value to encoded value
   //
   self.encodeFieldVaule = function(def, value) {
-
+    var output = null;
+    if (def.encoding === 'bcd') {
+      var num = value / 100;
+      output = [];
+      for (var i = 0; i < 6; ++i) {
+        output.unshift( num % 10 );
+        num /= 10;
+      }
+    } else if (Array.isArray(def.encoding)) {
+      output = def.encoding.indexOf(value);
+    } else if (def.encoding === 'bool') {
+      output = value ? 1 : 0;
+      } else if( typeof(def.encoding) === 'string') {
+        output = [];
+        for(var i=0; i < value.length; ++i)
+          output.push(def.encoding.indexOf(value.charAt(i)));
+    } else {
+      output = value;
+    }
+    return output;
   };
 }
 

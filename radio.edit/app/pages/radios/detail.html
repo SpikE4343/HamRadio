@@ -1,75 +1,126 @@
-<div style="width:100%" layout="row">
-  <!-- <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-
-        <md-toolbar layout="row" class="md-whiteframe-z1">
-              <h1>d.name</h1>
-        </md-toolbar>
-
-
-        <div>{{d.error}}</div>
-        <md-list ng-show="d.radios.length > 0" >
-            <md-list-item ng-repeat="radio in d.radios">
-                <md-button ng-click="d.selectRadio(radio, $index)" ng-class="{'selected' : radio === d.radio }">
-                    {{radio.name}}
-                </md-button>
+<md-progress-linear
+  ng-show="d.radio == null && d.error != null"
+  md-mode="indeterminate">
+</md-progress-linear>
+<div
+     ng-show="d.radio != null"
+     flex
+     layout="column"
+     tabIndex="-1"
+     class="card-holder"
+     layout-fill
+      ng-cloak>
+  <md-tabs
+    md-dynamic-height
+    md-border-bottom
+    layout-fill flex>
+    <md-tab label="Radio {{$index+1}}"
+      ng-repeat="trans in d.radio.data.transcevers | filter:transFilter"
+      layout-fill flex>
+      <md-card layout-fill flex>
+        <md-content flex>
+          <md-table-container ng-if="d.tableView">
+            <table md-table
+                   md-row-select="true"
+                   multiple="true"
+                   ng-model="d.selected"
+                   class="md-primary"
+                   md-progress="promise">
+              <thead md-head
+                     md-order="query.order"
+                     md-trigger="onorderchange">
+                <tr md-row
+                    md-auto-select="true">
+                  <th md-column
+                      md-numeric
+                      order-by="{{fieldName}}"
+                      ng-repeat="(fieldName, field) in d.radio.map.items.channel.fields">
+                    <span>{{field.label}} {{field.units}}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row
+                    md-auto-select
+                    md-select="channel" md-select-id="label"
+                    ng-repeat="channel in trans.channels | limitTo: d.channelLimit: (trans.page - 1) * d.channelLimit">
+                  <td md-cell
+                      ng-repeat="(fieldName, field) in d.radio.map.items.channel.fields">
+                    {{d.radio.channelFieldValue( trans, channel, fieldName)}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+          <md-table-pagination ng-if="d.tableView"
+            md-limit="d.channelLimit"
+            md-limit-options="[10, 25, 50]"
+            md-page="trans.page"
+            md-total="{{trans.channels.length}}"
+            md-page-select="true">
+          </md-table-pagination>
+          <md-list ng-if="!d.tableView">
+            <md-list-item class="md-3-line"
+              ng-repeat="channel in trans.channels | limitTo: d.channelLimit: (trans.page - 1) * d.channelLimit">
+              <div class="md-list-item-text">
+                <h4>{{$index}}</h4>
+                <h3 class="md-title">{{d.radio.channelFieldValue( trans, channel, "name")}}</h3>
+                <p>{{d.radio.channelFieldValue( trans, channel, "frequency")}}</p>
+              </div>
+              <md-button class="md-icon-button md-secondary" aria-label="Edit">
+                <md-tooltip>Edit</md-tooltip>
+                <md-icon>create</md-icon>
+              </md-button>
+              <md-divider md-inset hide-sm ng-if="!$last"></md-divider>
+              <md-divider hide-gt-sm ng-if="!$last"></md-divider>
             </md-list-item>
-        </md-list>
-    </md-sidenav> -->
-  <md-progress-linear ng-show="d.radio == null && d.error != null" md-mode="indeterminate"></md-progress-linear>
-  <div ng-show="d.radio != null" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
-    <!-- <md-toolbar layout="row" class="md-whiteframe-z1">
-            <h1>{{ d.radio.settings.callsign}}</h1>
-        </md-toolbar> -->
-    <section layout-padding>
+          </md-list>
+        </md-content>
+      </md-card>
+    </md-tab>
+    <!-- <md-tab label="Transcevers">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2><span>Transivers</span></h2>
+          <span flex></span>
+          <md-input-container md-no-float class="md-accent" style="padding-bottom:0px;margin-left:25px">
+            <md-icon>search</md-icon>
+            <input ng-model="transFilter" placeholder="Filter" type="text">
+          </md-input-container>
+          <md-button class="md-icon-button"
+                     ng-class="{'md-raised md-primary' : d.tableView }"
+                     ng-click="d.tableView = true">
+            <md-tooltip>Table View</md-tooltip>
+            <md-icon>view_table</md-icon>
+          </md-button>
+          <md-button ng-selected="!d.tableView" class="md-icon-button"
+                     ng-class="{'md-raised md-primary' : !d.tableView }"
+                     ng-click="d.tableView = false">
+            <md-tooltip>List View</md-tooltip>
+            <md-icon>view_list</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-content layout-padding flex id="content">
+        <md-tabs md-dynamic-height md-border-bottom>
+
+        </md-tabs>
+      </md-content>
+    </md-tab> -->
+    <md-tab label="{{name}}"
+      ng-repeat="(name, section) in d.radio.data.settings">
+      <md-subheader>{{name}}</md-subheader>
       <md-content flex id="content">
         <div layout="row" flex style="width:50%">
           <br />
           <md-content layout-padding class="autoScroll">
-            <md-input-container ng-repeat="(name, setting) in d.radio.data.settings">
+            <md-input-container ng-repeat="(name, setting) in section">
               <label>{{name}}</label>
               <input ng-model="setting" type="text">
             </md-input-container>
           </md-content>
         </div>
       </md-content>
-    </section>
-
-    <md-card>
-      <md-content layout-padding flex id="content">
-        <md-toolbar>
-          <div class="md-toolbar-tools">
-            <h2><span>Bands</span></h2>
-            <span flex></span>
-            <md-button class="md-icon-button" aria-label="Favorite">
-              <md-icon>view_list</md-icon>
-            </md-button>
-            <md-button ng-disabled="true" class="md-icon-button" aria-label="Favorite">
-              <md-icon>view_module</md-icon>
-            </md-button>
-          </div>
-        </md-toolbar>
-        <md-tabs md-dynamic-height md-border-bottom>
-          <md-tab label="{{$index}}" ng-repeat="band in d.radio.data.bands">
-            <md-data-table-container>
-              <table md-data-table class="md-primary" md-row-select="selected" md-progress="deferred">
-                <thead md-order="query.order" md-trigger="onorderchange">
-                  <tr>
-                    <th order-by="{{fieldName}}" name="{{field.label}}" unit="{{field.unit}}" ng-repeat="(fieldName, field) in d.radio.map.items.channel.fields"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr md-auto-select ng-repeat="channel in band.channels | limitTo: d.channelLimit: (band.page - 1) * d.channelLimit">
-                    <td ng-repeat="(fieldName, field) in d.radio.map.items.channel.fields">
-                      {{d.radio.channelFieldValue( band, channel, fieldName)}}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </md-data-table-container>
-            <md-data-table-pagination md-limit="d.channelLimit" md-page="band.page" md-total="{{band.channels.length}}"></md-data-table-pagination>
-          </md-tab>
-        </md-tabs>
-      </md-content>
-    </md-card>
-  </div>
+    </md-tab>
+  </md-tabs>
 </div>

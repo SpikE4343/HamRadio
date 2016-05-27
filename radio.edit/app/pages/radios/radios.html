@@ -1,50 +1,83 @@
-
-
 <div layout="row" flex layout-fill>
   <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z1"
               md-component-id="nav"
-              md-is-locked-open="$mdMedia('gt-sm')" >
-    <!-- md-is-locked-open="$mdMedia('gt-sm')" -->
-    <md-toolbar class="md-toolbar-tools md-whiteframe-z1"
+              md-is-locked-open="$mdMedia('gt-sm')">
+    <md-toolbar class="md-whiteframe-z1"
                 layout="row">
-      <md-button class="md-icon-button"
-                 aria-label="Settings"
-                 ng-click="c.toggleNavDrawer()">
-        <md-icon>settings_input_antenna</md-icon>
-      </md-button>
+      <div class="md-toolbar-tools" flex>
+        <md-button class="md-icon-button"
+                   aria-label="Settings"
+                   ng-click="c.toggleNavDrawer()">
+          <md-icon>settings_input_antenna</md-icon>
+        </md-button>
+      </div>
+      <div class="md-toolbar-tools" layout="row" flex ng-show="c.isNavDrawerOpen()">
+        <md-button class="md-icon-button"
+                   aria-label="Open"
+                   ng-click="c.open()">
+          <md-tooltip>Open</md-tooltip>
+          <md-icon>folder_open</md-icon>
+        </md-button>
+        <md-button class="md-icon-button"
+                   aria-label="Save"
+                   ng-click="c.save()"
+                   ng-show="c.isLockedOpen()">
+          <md-tooltip>Save</md-tooltip>
+          <md-icon>save</md-icon>
+        </md-button>
+      </div>
     </md-toolbar>
 
     <md-list>
-        <md-list-item ng-repeat="page in c.pages"
+        <md-progress-circular
+          ng-show="c.radios == null && d.error != null"
+          md-mode="indeterminate">
+        </md-progress-circular>
+        <md-list-item
+          ng-repeat="radio in c.radios"
                       layout="row"
-                      ui-sref="{{page.state}}"
+                      ui-sref="radios.detail({ id: $index })"
                       ng-click="c.closeNavDrawer()">
-            <md-icon >{{page.icon}}</md-icon>
-            <p class="md-body-2">
-              {{page.name}}
-            </p>
+            <md-icon >memory</md-icon>
+            <p class="md-body-2">{{radio.file}}</p>
         </md-list-item>
     </md-list>
   </md-sidenav>
 
-  <md-content class="main-content" layout="column" flex>
-    <md-toolbar class="md-toolbar-tools md-whiteframe-z1" layout="row">
-      <md-button ng-hide="c.isNavDrawerOpen()"class="md-icon-button" aria-label="Settings" ng-click="c.toggleNavDrawer()">
-        <md-icon>settings_input_antenna</md-icon>
-      </md-button>
-      <h2>
-        <span>Tugne</span>
-
-      </h2>
-      <h1><span> > {{c.navs().join(' > ')}}</span></h1>
-      <span flex></span>
-      <md-button class="md-icon-button" aria-label="Settings">
-        <md-icon>search</md-icon>
-      </md-button>
-      <md-button aria-label="Open Settings">
+  <div layout="column" flex>
+    <md-toolbar class="md-whiteframe-z1">
+      <div class="md-toolbar-tools" layout="row" flex>
+        <div class="md-toolbar-tools" layout="row" flex ng-hide="c.isNavDrawerOpen()">
+          <md-button class="md-icon-button" aria-label="Settings" ng-click="c.toggleNavDrawer()">
+            <md-tooltip>Menu</md-tooltip>
+            <md-icon>settings_input_antenna</md-icon>
+          </md-button>
+          <md-button class="md-icon-button"
+                     aria-label="Open"
+                     ng-click="c.open()">
+            <md-tooltip>Open</md-tooltip>
+            <md-icon>folder_open</md-icon>
+          </md-button>
+          <md-button class="md-icon-button"
+                     aria-label="Save"
+                     ng-click="c.save()">
+            <md-tooltip>Save</md-tooltip>
+            <md-icon>save</md-icon>
+          </md-button>
+        </div>
+        <span flex></span>
+        <h2><span>Tugne</span></h2>
+        <h1><span ng-cloak> > {{c.navs().join(' > ')}}</span></h1>
+        <span flex></span>
+        <!-- <md-button class="md-icon-button" aria-label="Settings">
+          <md-icon>search</md-icon>
+        </md-button>
+        <md-button aria-label="Open Settings">
           <md-icon>more_vert</md-icon>
-      </md-button>
+        </md-button> -->
+      </div>
     </md-toolbar>
-    <div flex ui-view></div>
-  </md-content>
+    <md-content flex layout-fill ui-view class="main-content">
+    </md-content>
+  </div>
 </div>
