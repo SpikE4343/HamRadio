@@ -1,4 +1,5 @@
 var fs = require('fs');
+var nedb = require('nedb');
 
 //
 // Link file marker to data mapping
@@ -15,6 +16,8 @@ var mapping = {
 //
 var dataMapping = {
 	'ftm-400': {
+    "model" : 'ftm-400',
+    "fileMarker": 'AH034$',
 		"items": {
 			"channel": {
 			"size": 16,
@@ -194,58 +197,28 @@ angular
 		'$q',
 	function ($q) {
 		self = this;
-		self.saves = [{
-				name:'KK6UGN',
-				file:'kk6ugn-ftm-400.dat',
-				model:'FTM-400',
-				vender:'Yaesu',
-				typeset: ftm400Memory,
-	      map: 'ftm-400',
-			},
-			{
-				name:'KK6NLW',
-				file:'kk6nlw-ftm-400.dat',
-				model:'FTM-400',
-				vender:'Yaesu',
-				typeset: ftm400Memory,
-				map: 'ftm-400',
-			}
-		];
+    self.db = new nedb( {
+      filename: 'data/mapping.db',
+      autoload: true
+    });
 
-		//
-		// fetch all save files currently
+    //
+		// fetch all saved mappings
 		//
 		self.list = function(){
 			var d = $q.defer();
 
-			setTimeout(function(){
-				d.resolve(self.saves);
-			}, 10);
+      self.db.find({})
+        .sort({ 'model': 1 })
+        .limit(5)
+        .exec(function (err, docs) {
+           if( err )
+            d.reject( err );
+           else
+            d.resolve( docs );
+      });
 
 			return d.promise;
-		};
-
-		//
-		// read all file mapping data files
-		//
-		self.loadMappings = function (){
-			// parse all .json files in mapping folder
-			// linking file.marker -> filename
-		};
-
-		//
-		// create radio and read from save data at id
-		//
-		self.load = function( id ) {
-			var radio = RadioFactory(self.saves[id]);
-			return radio.load( 'app/data/saves/' );
-		};
-
-		//
-		// get save file data by index
-		//
-		self.radioInfo = function( id ){
-			return self.saves[id];
 		};
 	}
 ]);
