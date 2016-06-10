@@ -75,49 +75,83 @@ function Radio($q, info) {
   //
   self.decodeFieldValue = function(def, value) {
     var output = null;
-    if (def.encoding === 'bcd') {
+    if (def.encoding === 'bcd')
+    {
       var s = value.length - 1;
       var base = 0.01
       output = 0.0;
-      for (var i = s; i >= 0; --i) {
+      for (var i = s; i >= 0; --i)
+      {
         output += value[i] * base;
         base *= 10;
       }
-    } else if (Array.isArray(def.encoding)) {
+    }
+    else if (Array.isArray(def.encoding))
+    {
       output = def.encoding[value];
-    } else if (def.encoding === 'bool') {
+    }
+    else if (def.encoding === 'bool')
+    {
       output = value > 0 ? true : false;
-      } else if( typeof(def.encoding) === 'string') {
+    }
+    else if( typeof(def.encoding) === 'string')
+    {
         output = "";
         for(var i=0; i < value.length; ++i)
-          output += def.encoding.charAt(value[i]);
-    } else {
+        {
+          var char = value[i];
+          if( def.fill !== undefined && char === def.fill)
+            break;
+
+          output += def.encoding.charAt(char);
+        }
+    }
+    else
+    {
       output = value;
     }
+
     return output;
   };
 
   //
   // Convert human friendly version of value to encoded value
   //
-  self.encodeFieldVaule = function(def, value) {
+  self.encodeFieldValue = function(def, value) {
     var output = null;
-    if (def.encoding === 'bcd') {
+    if (def.encoding === 'bcd')
+    {
       var num = value / 100;
       output = [];
-      for (var i = 0; i < 6; ++i) {
+      for (var i = 0; i < 6; ++i)
+      {
         output.unshift( num % 10 );
         num /= 10;
       }
-    } else if (Array.isArray(def.encoding)) {
+    }
+    else if (Array.isArray(def.encoding))
+    {
       output = def.encoding.indexOf(value);
-    } else if (def.encoding === 'bool') {
+    }
+    else if (def.encoding === 'bool')
+    {
       output = value ? 1 : 0;
-      } else if( typeof(def.encoding) === 'string') {
+    }
+    else if( typeof(def.encoding) === 'string')
+    {
         output = [];
         for(var i=0; i < value.length; ++i)
-          output.push(def.encoding.indexOf(value.charAt(i)));
-    } else {
+        {
+          var char = value.charAt(i);
+          if( def.fill != undefined && char == def.fill)
+            break;
+
+          output.push(
+            def.encoding.indexOf(char));
+        }
+    }
+    else
+    {
       output = value;
     }
     return output;

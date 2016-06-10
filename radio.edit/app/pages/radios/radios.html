@@ -34,6 +34,14 @@
           md-mode="indeterminate">
         </md-progress-circular>
         <md-list-item
+          layout="row"
+          ui-sref="radios.list"
+          ng-click="c.closeNavDrawer()">
+          <md-icon>view_quilt</md-icon>
+          <h4>All Files</h4>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item
           ng-repeat="radio in c.radios"
                       layout="row"
                       ui-sref="radios.detail({ id: $index })"
