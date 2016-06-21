@@ -1,7 +1,19 @@
-angular.module('app')
-       .controller('RadiosController', ['radioService', '$mdDialog', '$mdSidenav', 'radioToolbar', RadiosController]);
+var remote = require('remote');
+var dialog = remote.require('dialog');
 
-function RadiosController(radioService, $mdDialog, $mdSidenav, radioToolbar) {
+angular.module('app')
+       .controller('RadiosController',
+        ['radioService',
+         '$mdDialog',
+         '$mdSidenav',
+         'radioToolbar',
+         RadiosController]);
+
+function RadiosController(
+  radioService,
+  $mdDialog,
+  $mdSidenav,
+  radioToolbar) {
 	var self = this;
   self.pages = [
       {
@@ -9,7 +21,6 @@ function RadiosController(radioService, $mdDialog, $mdSidenav, radioToolbar) {
         icon: 'home',
         state: 'radios.list'
       },
-
       {
         name: 'Memory Maps',
         icon: 'memory',
@@ -40,9 +51,15 @@ function RadiosController(radioService, $mdDialog, $mdSidenav, radioToolbar) {
 
   self.closeNavDrawer = function() {
     $mdSidenav('nav').close();
-  }
+  };
 
   self.navs = function() {
     return radioToolbar.navs;
-  }
+  };
+
+  self.open = function() {
+    dialog.showOpenDialog(function (fileNames) {
+      radioService.open( fileNames[0]);
+    });
+  };
 }
