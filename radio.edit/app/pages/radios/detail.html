@@ -65,7 +65,7 @@
               <div class="md-list-item-text">
                 <h4>{{$index}}</h4>
                 <h3 class="md-title">{{d.radio.channelFieldValue( trans, channel, "name")}}</h3>
-                <p>{{d.radio.channelFieldValue( trans, channel, "frequency")}}</p>
+                <p>{{channel.frequency}}</p>
               </div>
               <md-button class="md-icon-button md-secondary" aria-label="Edit" ng-click='d.showEditDialog(d.radio, trans, channel)'>
                 <md-tooltip>Edit</md-tooltip>

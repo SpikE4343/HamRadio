@@ -5,6 +5,69 @@ var ftm400Memory = {
   'jBinary.littleEndian': true,
   'jBinary.all': 'memory',
 
+  Frequency: jBinary.Type({
+    params: ['size'],
+    read: function(){
+      var value = this.binary.read( ['array', ['bitfield', 4], this.size]  );
+
+      var s = value.length - 1;
+      var base = 0.01;
+      var output = 0.0;
+      for (var i = s; i >= 0; --i)
+      {
+        output += value[i] * base;
+        base *= 10;
+      }
+
+      return output;
+    },
+
+    write: function(value){
+      var num = value / 100;
+      var output = [];
+      for (var i = 0; i < this.size; ++i)
+      {
+        output.unshift( num % 10 );
+        num /= 10;
+      }
+
+      this.binary.write( ['array', ['bitfield', 4] ], output );
+    }
+  }),
+
+  // LabelString: jBinary.Type({
+  //   params: ['size'],
+  //   resolve: function(getType){
+  //     this.size = getType(this.size);
+  //   },
+  //   read: function(){
+  //     var value = this.binary.read( ['array', 'uint8', this.size ] );
+  //
+  //     var s = value.length - 1;
+  //     var base = 0.01;
+  //     var output = 0.0;
+  //     for (var i = s; i >= 0; --i)
+  //     {
+  //       output += value[i] * base;
+  //       base *= 10;
+  //     }
+  //
+  //     return output;
+  //   },
+  //
+  //   write: function(value){
+  //     var num = value / 100;
+  //     var output = [];
+  //     for (var i = 0; i < this.size; ++i)
+  //     {
+  //       output.unshift( num % 10 );
+  //       num /= 10;
+  //     }
+  //
+  //     this.binary.write( ['array', ['bitfield', 4], this.size ], output );
+  //   }
+  // }),
+
   bcd: ['bitfield', 4],
 
   channel: {
@@ -19,13 +82,13 @@ var ftm400Memory = {
     oddsplit: ['bitfield', 1],
     duplex: ['bitfield', 2],
 // uint8 * 3
-    frequency: ['array', 'bcd', 6 ],
+    frequency: ['Frequency', 6 ],
 // uint8
     unknown4: [ 'bitfield', 1],
     tmode: ['bitfield', 3],
     unknown5: [ 'bitfield', 4],
 // uint8 * 3
-    split: ['array', 'bcd', 6 ],
+    split: ['Frequency', 6 ],
 // uint8
     power: [ 'bitfield', 2],
     tone: [ 'bitfield', 6],
