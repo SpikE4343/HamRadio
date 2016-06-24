@@ -1,6 +1,14 @@
 // var fs = require('fs');
 var jBinary = require('jbinary');
 
+var DTCS = [
+
+];
+
+var plTones = [
+
+];
+
 function Radio($q, info) {
   var self = this;
   self.filename = info.file;

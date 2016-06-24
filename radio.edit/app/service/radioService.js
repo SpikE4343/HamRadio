@@ -35,40 +35,58 @@ var ftm400Memory = {
     }
   }),
 
-  // LabelString: jBinary.Type({
-  //   params: ['size'],
-  //   resolve: function(getType){
-  //     this.size = getType(this.size);
-  //   },
-  //   read: function(){
-  //     var value = this.binary.read( ['array', 'uint8', this.size ] );
-  //
-  //     var s = value.length - 1;
-  //     var base = 0.01;
-  //     var output = 0.0;
-  //     for (var i = s; i >= 0; --i)
-  //     {
-  //       output += value[i] * base;
-  //       base *= 10;
-  //     }
-  //
-  //     return output;
-  //   },
-  //
-  //   write: function(value){
-  //     var num = value / 100;
-  //     var output = [];
-  //     for (var i = 0; i < this.size; ++i)
-  //     {
-  //       output.unshift( num % 10 );
-  //       num /= 10;
-  //     }
-  //
-  //     this.binary.write( ['array', ['bitfield', 4], this.size ], output );
-  //   }
-  // }),
+  CustomString: jBinary.Type({
+    params: [ 'size', 'fill', 'encoding'],
+    // read and decode string
+    read: function(){
+      var value = this.binary.read( ['array', 'uint8', this.size ] );
 
-  bcd: ['bitfield', 4],
+      var output = "";
+      for(var i=0; i < value.length; ++i) {
+        var char = value[i];
+        if( char == this.fill)
+          break;
+
+        if( this.encoding == 'ascii')
+          output += String.fromCharCode( char );
+        else
+          output += this.encoding.charAt(char);
+      }
+
+      return output;
+    },
+
+    write: function(value){
+      var output = [];
+      for(var i=0; i < value.length; ++i) {
+        var char = value.charAt(i);
+        if( char == this.fill)
+          break;
+
+        output.push(
+          this.encoding.indexOf(char));
+      }
+
+      this.binary.write( ['array', 'uint8', this.size ], output );
+    }
+  }),
+
+  Enumeration : jBinary.Type({
+    params: [ 'itemType', 'names'],
+    resolve: function (getType) {
+      this.itemType = getType(this.itemType);
+    },
+    // read and decode
+    read: function(){
+      var value = this.binary.read( this.itemType );
+      return this.names[value];
+    },
+    // encode and write
+    write: function(value){
+      var output = names.indexOf(value);
+      this.binary.write( this.itemType, output );
+    }
+  }),
 
   channel: {
 // uint8
@@ -77,20 +95,36 @@ var ftm400Memory = {
     unknown1: ['bitfield', 5],
 // uint8
     unknown2: ['bitfield', 1],
-    mode: ['bitfield', 3],
+    mode: [
+      'Enumeration',
+      ['bitfield', 3],
+      [ "FM", "AM", "NFM", "", "WFM" ]
+    ],
     unknown3: ['bitfield', 1],
     oddsplit: ['bitfield', 1],
-    duplex: ['bitfield', 2],
+    duplex: [
+      'Enumeration',
+      ['bitfield', 2],
+      [ "", "", "-", "+", "split" ]
+    ],
 // uint8 * 3
     frequency: ['Frequency', 6 ],
 // uint8
     unknown4: [ 'bitfield', 1],
-    tmode: ['bitfield', 3],
+    tmode: [
+      'Enumeration',
+      ['bitfield', 3],
+      [ "", "Tone", "TSQL", "-RVT", "DTCS", "-PR", "-PAG" ]
+    ],
     unknown5: [ 'bitfield', 4],
 // uint8 * 3
     split: ['Frequency', 6 ],
 // uint8
-    power: [ 'bitfield', 2],
+    power: [
+      'Enumeration',
+      ['bitfield', 2],
+      [ "Hi", "Mid", "Low" ]
+    ],
     tone: [ 'bitfield', 6],
 // uint8
     unknown6: [ 'bitfield', 1],
@@ -104,17 +138,22 @@ var ftm400Memory = {
     unknown9: ['array','uint8', 2]
   },
 
-	transcever: {
-		channels: [ 'array', 'channel', 518]
-	},
+  transcever: {
+    channels: [ 'array', 'channel', 518]
+  },
 
-  label: ['array', 'uint8', 8],
-	labellist: [ 'array', 'label', 518 ],
+  LabelString: [
+    'CustomString', 8,
+    '?',
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!\"#$%&`()*+,-./:;<=>?@[\\]^_`{|}~?????? ???????????????????????????????????????????????????????????????????????????????????????????"
+  ],
 
-	home: {
-		channel: 'channel',
-		label: 'labellist'
-	},
+  labellist: [ 'array', 'LabelString', 518 ],
+
+  home: {
+    channel: 'channel',
+    label: 'labellist'
+  },
 
   aprsCallsign:{
 
@@ -124,33 +163,37 @@ var ftm400Memory = {
   },
 
   main_options: {
-    callsign: ['string', 10]
+    callsign: [
+      'CustomString', 10,
+      255,
+      'ascii'
+     ]
   },
 
-	options: {
+  options: {
     Main: 'main_options',
     APRS: [
       'aprsCallsign',
       'aprsOptions'
     ]
-	},
+  },
 
-	memory: {
-		tag: ['string', 6],
+  memory: {
+    tag: ['string', 6],
     unknown1: ['blob', 690],
     settings: 'options',
 
-		unknown2: ['blob', 1342],
+    unknown2: ['blob', 1342],
 
-		// home: ['array', 'home', 2],
+    // home: ['array', 'home', 2],
     //radio0: 'channel',
     //label0: 'label',
     //radio1: 'channel',
     //label1: 'label',
 
-		transcevers: ['array', 'transcever', 2],
+    transcevers: ['array', 'transcever', 2],
     labels: ['array', 'labellist', 2]
-	}
+  }
 };
 
 //

@@ -64,7 +64,7 @@
               ng-repeat="channel in trans.channels | limitTo: d.channelLimit: (trans.page - 1) * d.channelLimit">
               <div class="md-list-item-text">
                 <h4>{{$index}}</h4>
-                <h3 class="md-title">{{d.radio.channelFieldValue( trans, channel, "name")}}</h3>
+                <h3 class="md-title">{{d.radio.data.labels[d.radio.data.transcevers.indexOf(trans)][$index]}}</h3>
                 <p>{{channel.frequency}}</p>
               </div>
               <md-button class="md-icon-button md-secondary" aria-label="Edit" ng-click='d.showEditDialog(d.radio, trans, channel)'>
