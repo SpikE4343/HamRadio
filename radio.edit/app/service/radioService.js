@@ -38,7 +38,7 @@ var ftm400Memory = {
 // unit8
     unknown8: 'uint8',
     offset: 'uint8',
-    unknown9: ['array','uint8', 2],
+    unknown9: ['array','uint8', 2]
   },
 
 	transcever: {
@@ -337,5 +337,12 @@ angular
 		self.radioInfo = function( id ){
 			return self.saves[id];
 		};
+
+    //
+    // read in a new save file
+    //
+    self.open = function( filename ){
+
+    };
 	}
 ]);

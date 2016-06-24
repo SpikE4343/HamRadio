@@ -1,0 +1,9 @@
+<md-dialog>
+  <md-dialog-content flex>
+    <h1 class="md-display-2">{{trans.channels.indexOf(channel)}}</h1>
+    <md-input-container ng-repeat="(name, value) in radio.map.items.channel.fields">
+      <label>{{value.label}}</label>
+      <input ng-model="channel[name]" type="text">
+    </md-input-container>
+  </md-dialog-content>
+</md-dialog>
