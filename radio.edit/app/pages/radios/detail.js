@@ -66,6 +66,8 @@ function EditDialogController($scope, $mdDialog, radio, transcever, channel) {
     $scope.channel = channel;
     $scope.radio = radio;
     $scope.transcever = transcever;
+    $scope.number = transcever.channels.indexOf(channel);
+    $scope.fields = radio.map.items.channel.fields;
 
     $scope.closeDialog = function() {
       // Easily hides most recent dialog shown...

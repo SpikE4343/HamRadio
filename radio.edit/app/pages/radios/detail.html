@@ -61,7 +61,7 @@
           </md-table-pagination>
           <md-list ng-if="!d.tableView">
             <md-list-item class="md-3-line"
-              ng-repeat="channel in trans.channels | limitTo: d.channelLimit: (trans.page - 1) * d.channelLimit">
+              ng-repeat="channel in trans.channels">
               <div class="md-list-item-text">
                 <h4>{{$index}}</h4>
                 <h3 class="md-title">{{d.radio.data.labels[d.radio.data.transcevers.indexOf(trans)][$index]}}</h3>

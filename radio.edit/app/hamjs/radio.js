@@ -5,7 +5,7 @@ var DTCS = [
 
 ];
 
-var plTones = [
+var Tones = [
 
 ];
 

@@ -92,11 +92,10 @@ var ftm400dr = {
     }),
 
     channel: {
-  // uint8
       used: [ 'bitfield', 1],
       skip: [ 'bitfield', 2],
       unknown1: ['bitfield', 5],
-  // uint8
+
       unknown2: ['bitfield', 1],
       mode: [
         'Enumeration',
@@ -110,9 +109,9 @@ var ftm400dr = {
         ['bitfield', 3],
         [ "", "", "-", "+", "split" ]
       ],
-  // uint8 * 3
+
       frequency: ['Frequency', 6 ],
-  // uint8
+
       unknown4: [ 'bitfield', 1],
       tmode: [
         'Enumeration',
@@ -120,22 +119,22 @@ var ftm400dr = {
         [ "", "Tone", "TSQL", "-RVT", "DTCS", "-PR", "-PAG" ]
       ],
       unknown5: [ 'bitfield', 4],
-  // uint8 * 3
+
       split: ['Frequency', 6 ],
-  // uint8
+
       power: [
         'Enumeration',
         ['bitfield', 2],
         [ "Hi", "Mid", "Low" ]
       ],
       tone: [ 'bitfield', 6],
-  // uint8
+
       unknown6: [ 'bitfield', 1],
       dtcs: [ 'bitfield', 7],
-  // uint8
+
       showalpha: [ 'bitfield', 1],
       unknown7: [ 'bitfield', 7],
-  // unit8
+
       unknown8: 'uint8',
       offset: 'uint8',
       unknown9: ['array','uint8', 2]
@@ -156,10 +155,11 @@ var ftm400dr = {
   		label: 'labellist'
   	},
 
-    aprsCallsign:{
+    aprsCallsign: {
 
     },
-    aprsOptions:{
+
+    aprsOptions: {
 
     },
 
@@ -195,5 +195,62 @@ var ftm400dr = {
   		transcevers: ['array', 'transcever', 2],
       labels: ['array', 'labellist', 2]
   	}
+  },
+  
+  map: {
+    channel: {
+      size: 16,
+      fields: {
+      frequency: {
+        label: "Frequency",
+        units: "Mhz"
+      },
+      name: {
+        label: "Label"
+      },
+      mode: {
+        label: "Mode"
+      },
+      power: {
+        label: "Power",
+      },
+      duplex: {
+        label: "Duplex"
+      },
+      offset: {
+        label: "Offset"
+      },
+      tmode: {
+        label: "TMode"
+      },
+      tone: {
+        label: "Tone"
+      },
+      dtcs: {
+        label: "DTCS"
+      },
+      used: {
+        label: "Used",
+        encoding: "bool",
+        show: false
+      },
+      skip: {
+        label: "Skip",
+        encoding: "bool"
+      },
+      oddsplit: {
+        label: "Odd Split",
+        encoding: "bool"
+      },
+      showalpha: {
+        label: "Show Alpha",
+        encoding: "bool"
+      },
+      split: {
+        label: "Split",
+        units: "Mhz",
+        encoding: "bcd"
+      }
+    }
   }
 };

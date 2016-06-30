@@ -1,9 +1,26 @@
 <md-dialog>
-  <md-dialog-content flex>
-    <h1 class="md-display-2">{{trans.channels.indexOf(channel)}}</h1>
-    <md-input-container ng-repeat="(name, value) in radio.map.items.channel.fields">
-      <label>{{value.label}}</label>
-      <input ng-model="channel[name]" type="text">
-    </md-input-container>
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools ">
+      <h2>Station: {{number}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="closeDialog()">
+        <md-icon aria-label="Close dialog">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content flex class="md-inline-form">
+    <div class="md-dialog-content" layout-padding>
+      <md-input-container ng-repeat="(name, value) in fields">
+        <label>{{value.label}}</label>
+        <input ng-model="channel[name]" type="text">
+      </md-input-container>
+    </div>
   </md-dialog-content>
+  <md-dialog-actions>
+    <md-button
+      class="md-accent"
+      ng-click="closeDialog()">
+      Done
+    </md-button>
+  </md-dialog-actions>
 </md-dialog>
