@@ -96,32 +96,32 @@ var data = {
     "15 generic additional station, digi, mobile, wx, etc"],
 
     positionComment: [
-    "off duty", "en route", "in service", "returning", "committed",
-    "special", "priority", "custom 0", "custom 1", "custom 2", "custom 3",
-    "custom 4", "custom 5", "custom 6", "EMERGENCY"]
+      "off duty", "en route", "in service", "returning", "committed",
+      "special", "priority", "custom 0", "custom 1", "custom 2", "custom 3",
+      "custom 4", "custom 5", "custom 6", "EMERGENCY"],
 
 //# http://aprs.org/symbols/symbolsX.txt
     symbols: [
-    "Police/Sheriff", "[reserved]", "Digi", "Phone", "DX Cluster",
-    "HF Gateway", "Small Aircraft", "Mobile Satellite Groundstation",
-    "Wheelchair", "Snowmobile", "Red Cross", "Boy Scouts", "House QTH (VHF)",
-    "X", "Red Dot", "0 in Circle", "1 in Circle", "2 in Circle",
-    "3 in Circle", "4 in Circle", "5 in Circle", "6 in Circle", "7 in Circle",
-    "8 in Circle", "9 in Circle", "Fire", "Campground", "Motorcycle",
-    "Railroad Engine", "Car", "File Server", "Hurricane Future Prediction",
-    "Aid Station", "BBS or PBBS", "Canoe", "[reserved]", "Eyeball",
-    "Tractor/Farm Vehicle", "Grid Square", "Hotel", "TCP/IP", "[reserved]",
-    "School", "PC User", "MacAPRS", "NTS Station", "Balloon", "Police", "TBD",
-    "Recreational Vehicle", "Space Shuttle", "SSTV", "Bus", "ATV",
-    "National WX Service Site", "Helicopter", "Yacht/Sail Boat", "WinAPRS",
-    "Human/Person", "Triangle", "Mail/Postoffice", "Large Aircraft",
-    "WX Station", "Dish Antenna", "Ambulance", "Bicycle",
-    "Incident Command Post", "Dual Garage/Fire Dept", "Horse/Equestrian",
-    "Fire Truck", "Glider", "Hospital", "IOTA", "Jeep", "Truck", "Laptop",
-    "Mic-Repeater", "Node", "Emergency Operations Center", "Rover (dog)",
-    "Grid Square above 128m", "Repeater", "Ship/Power Boat", "Truck Stop",
-    "Truck (18 wheeler)", "Van", "Water Station", "X-APRS", "Yagi at QTH",
-    "TDB", "[reserved]"
+      "Police/Sheriff", "[reserved]", "Digi", "Phone", "DX Cluster",
+      "HF Gateway", "Small Aircraft", "Mobile Satellite Groundstation",
+      "Wheelchair", "Snowmobile", "Red Cross", "Boy Scouts", "House QTH (VHF)",
+      "X", "Red Dot", "0 in Circle", "1 in Circle", "2 in Circle",
+      "3 in Circle", "4 in Circle", "5 in Circle", "6 in Circle", "7 in Circle",
+      "8 in Circle", "9 in Circle", "Fire", "Campground", "Motorcycle",
+      "Railroad Engine", "Car", "File Server", "Hurricane Future Prediction",
+      "Aid Station", "BBS or PBBS", "Canoe", "[reserved]", "Eyeball",
+      "Tractor/Farm Vehicle", "Grid Square", "Hotel", "TCP/IP", "[reserved]",
+      "School", "PC User", "MacAPRS", "NTS Station", "Balloon", "Police", "TBD",
+      "Recreational Vehicle", "Space Shuttle", "SSTV", "Bus", "ATV",
+      "National WX Service Site", "Helicopter", "Yacht/Sail Boat", "WinAPRS",
+      "Human/Person", "Triangle", "Mail/Postoffice", "Large Aircraft",
+      "WX Station", "Dish Antenna", "Ambulance", "Bicycle",
+      "Incident Command Post", "Dual Garage/Fire Dept", "Horse/Equestrian",
+      "Fire Truck", "Glider", "Hospital", "IOTA", "Jeep", "Truck", "Laptop",
+      "Mic-Repeater", "Node", "Emergency Operations Center", "Rover (dog)",
+      "Grid Square above 128m", "Repeater", "Ship/Power Boat", "Truck Stop",
+      "Truck (18 wheeler)", "Van", "Water Station", "X-APRS", "Yagi at QTH",
+      "TDB", "[reserved]"
     ]
   }
 }
